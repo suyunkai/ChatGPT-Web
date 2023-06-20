@@ -29,7 +29,7 @@ function getConfig(key) {
 			host: 'smtp.qq.com',  // SMTP服务器地址
 			port: 465,  // SMTP服务器端口号
 			ignoreTLS: false,  // 是否忽略TLS
-			secure: false,  // 是否使用安全连接
+			secure: true,  // 是否使用安全连接
 			auth: {
 				user: '1071442894@qq.com',  // SMTP服务器用户名
 				pass: 'gachwkiphvyjbdad'  // SMTP服务器密码
