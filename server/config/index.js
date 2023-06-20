@@ -28,7 +28,7 @@ function getConfig(key) {
 		email_config: {  // 邮件配置信息
 			host: 'smtp.qq.com',  // SMTP服务器地址
 			port: 465,  // SMTP服务器端口号
-			ignoreTLS: true,  // 是否忽略TLS
+			ignoreTLS: false,  // 是否忽略TLS
 			secure: false,  // 是否使用安全连接
 			auth: {
 				user: '1071442894@qq.com',  // SMTP服务器用户名
