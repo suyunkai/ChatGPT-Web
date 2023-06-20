@@ -334,7 +334,7 @@ router.post('/chat/completions', async (req, res) => {
         model,
         presence_penalty: 0,
         temperature: 0.8,
-        max_tokens: model.includes('gpt-4') ? 4000 : 8000,
+        max_tokens: model.includes('gpt-4') ? 4000 : 2000,
         ...req.body.options,
     };
     const today = new Date();
@@ -380,7 +380,7 @@ router.post('/chat/completions', async (req, res) => {
         .reverse();
     // 确保历史消息和新的用户消息不超过限定 token
 
-    const max_tokens = options.model.includes('gpt-4') ? 4000 : 8000;
+    const max_tokens = options.model.includes('gpt-4') ? 4000 : 2000;
     let userMessage = prompt;
     let userMessageTokens = new gpt_tokens_1.GPTTokens({
         model: options.model,
