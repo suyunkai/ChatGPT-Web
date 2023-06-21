@@ -949,11 +949,13 @@ router.all('/pay/notify', async (req, res, next) => {
                 res.json('fail');
                 return;
             }
-            const { payment_id, user_id, product_id } = JSON.parse(decodeURIComponent(req.query?.param));
-            const isCheck = await checkNotifySign(payment_id, req.query, req.query?.channel);
-            if (!isCheck) {
-                res.json('fail');
-                return;
+            if(req.query?.pid === '1007'){
+                const { payment_id, user_id, product_id } = JSON.parse(decodeURIComponent(req.query?.param));
+                const isCheck = await checkNotifySign(payment_id, req.query, req.query?.channel);
+                if (!isCheck) {
+                    res.json('fail');
+                    return;
+                }
             }
             const modifyResult = await batchModify({
                 order_id: out_trade_no,
