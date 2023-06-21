@@ -942,6 +942,7 @@ router.all('/pay/notify', async (req, res, next) => {
             }
         }
         if (req.query?.channel && req.query?.channel === 'yipay') {
+            console.log('yipai recall:', req.query)
             const { out_trade_no, trade_status, trade_no } = req.query;
             const orderInfo = await models_1.orderModel.getOrderInfo(out_trade_no);
             if (!orderInfo || orderInfo.trade_status !== 'TRADE_AWAIT') {
