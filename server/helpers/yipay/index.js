@@ -13,13 +13,15 @@ async function precreate(base, config, options) {
 	console.log(data);
 	const sortedData = (0, utils_1.ksort)(data);
 	const query = (0, utils_1.buildQueryString)(sortedData);
-	const sign = (0, utils_1.generateMd5)(query + base.key);
+	const sign = (0, utils_1.generatePayMd5)(query + base.key);
 	const formBody = querystring_1.default.stringify({
 		sign,
 		sign_type: 'MD5',
 		...data
 	});
 	const api = base.api + '/mapi.php';
+	console.log('pay api:', api)
+	console.log('pai formBody', formBody)
 	const response = await (0, node_fetch_1.default)(api, {
 		method: 'POST',
 		headers: {

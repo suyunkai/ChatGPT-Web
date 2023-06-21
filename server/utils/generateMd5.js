@@ -7,5 +7,13 @@ function generateMd5(str) {
     const md5 = crypto_1.default.createHash('md5').update(str).digest('hex');
     return md5;
 }
-exports.default = generateMd5;
+
+function generatePayMd5(str) {
+    const md5 = crypto_1.default.createHash('md5').update(str).digest('hex');
+    return md5;
+}
+exports.default = {
+    generateMd5,
+    generatePayMd5
+};
 //# sourceMappingURL=generateMd5.js.map
