@@ -13,7 +13,6 @@ async function precreate(base, config, options) {
 	console.log(data);
 	const sortedData = (0, utils_1.ksort)(data);
 	const query = (0, utils_1.buildQueryString)(sortedData);
-	console.log('query---', query)
 	const sign = (0, utils_1.generatePayMd5)(query + base.key);
 	const formBody = querystring_1.default.stringify({
 		sign,
@@ -43,9 +42,12 @@ async function precreate(base, config, options) {
 			  'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
 			}
 		  });
-		json = response;
+		console.log('res json', response)
+		return {
+			code: response.status === 200 ? 0 : json.status,
+			pay_url: response.url
+		};
 	}
-
 	return {
 		code: json.code === 1 ? 0 : json.code,
 		pay_url: json.payurl || json.qrcode || json.urlscheme

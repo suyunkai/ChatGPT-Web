@@ -71,7 +71,7 @@ function GoodsPay() {
     open: false,
     status: 'pay',
     order_id: '',
-    pay_url: 'sdsgsdgsdg'
+    pay_url: 'lifeiswonderful'
   })
 
   useEffect(() => {
