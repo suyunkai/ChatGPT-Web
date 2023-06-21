@@ -31,7 +31,7 @@ router.post('/carmi', async function (req, res, next) {
         const keys = [];
         for (let i = 0; i < q; i++) {
             const str = `${(0, utils_1.generateUUID)()}_${(0, utils_1.generateNowflakeId)(i + 1)()}_${new Date().getTime()}`;
-            const key = (0, utils_1.generateMd5)(str);
+            const key = (0, utils_1.generatePayMd5)(str);
             keys.push(key);
         }
         return keys;

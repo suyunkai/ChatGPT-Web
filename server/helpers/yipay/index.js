@@ -46,7 +46,7 @@ async function checkNotifySign(params, key) {
 	});
 	const sortedData = (0, utils_1.ksort)(data);
 	const query = (0, utils_1.buildQueryString)(sortedData);
-	const newSign = (0, utils_1.generateMd5)(query + key);
+	const newSign = (0, utils_1.generatePayMd5)(query + key);
 	return sign === newSign;
 }
 exports.default = {
