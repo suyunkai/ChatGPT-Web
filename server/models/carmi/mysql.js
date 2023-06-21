@@ -5,7 +5,7 @@ const sequelize_1 = require("sequelize");
 const db_1 = require("../db");
 exports.carmiMysql = db_1.sequelizeExample.define('carmi', {
     user_id: {
-        type: sequelize_1.DataTypes.STRING
+        type: sequelize_1.DataTypes.NUMBER
     },
     ip: {
         type: sequelize_1.DataTypes.STRING

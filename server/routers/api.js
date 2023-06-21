@@ -654,9 +654,9 @@ router.post('/use_carmi', async (req, res, next) => {
         status: 1,
         ip
     }, {
-        id: carmiInfo.id,
         key: carmi
     });
+
     if (!useCarmi[0]) {
         res.status(500).json((0, utils_1.httpBody)(-1, '使用卡密失败，请稍后再试'));
         return;
