@@ -950,7 +950,7 @@ router.all('/pay/notify', async (req, res, next) => {
                 return;
             }
             if(req.query?.pid === '1007'){
-                const { payment_id, user_id, product_id } = JSON.parse(decodeURIComponent(req.query?.param));
+                const { payment_id } = JSON.parse(decodeURIComponent(req.query?.param));
                 const isCheck = await checkNotifySign(payment_id, req.query, req.query?.channel);
                 if (!isCheck) {
                     res.json('fail');
@@ -962,8 +962,8 @@ router.all('/pay/notify', async (req, res, next) => {
                 trade_status,
                 trade_no,
                 notify_info: JSON.stringify(req.query),
-                user_id,
-                product_id
+                user_id: orderInfo.user_id,
+                product_id: orderInfo.product_id
             });
             if (!modifyResult) {
                 res.json('fail');
