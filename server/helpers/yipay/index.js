@@ -13,24 +13,39 @@ async function precreate(base, config, options) {
 	console.log(data);
 	const sortedData = (0, utils_1.ksort)(data);
 	const query = (0, utils_1.buildQueryString)(sortedData);
+	console.log('query---', query)
 	const sign = (0, utils_1.generatePayMd5)(query + base.key);
 	const formBody = querystring_1.default.stringify({
 		sign,
 		sign_type: 'MD5',
 		...data
 	});
-	const api = base.api + '/mapi.php';
-	console.log('pay api:', api)
-	console.log('pai formBody', formBody)
-	const response = await (0, node_fetch_1.default)(api, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-		},
-		body: formBody
-	});
-	const json = await response.json();
-	console.log('支付结构', json);
+	let api = '';
+	let response;
+	let json;
+	console.log('api formBody', formBody)
+	if(base.api === 'https://pay.bluetuo.com/'){
+		api = base.api + '/mapi.php';
+		response = await (0, node_fetch_1.default)(api, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+			},
+			body: formBody
+		});
+		json = await response.json();
+		console.log('拓普易支付返回结构', json);
+	}else if(base.api === 'https://fzpay.vip/'){
+		api = base.api + '/submit.php';
+		response = await (0, node_fetch_1.default)(`${api}?${formBody}`, {
+			method: 'GET',
+			headers: {
+			  'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+			}
+		  });
+		json = response;
+	}
+
 	return {
 		code: json.code === 1 ? 0 : json.code,
 		pay_url: json.payurl || json.qrcode || json.urlscheme
