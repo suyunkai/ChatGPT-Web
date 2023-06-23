@@ -530,6 +530,10 @@ router.post('/chat/completions', async (req, res) => {
             ai3_ratio,
             ai4_ratio
         };
+        // 添加一个标志位来记录是否已经计算过费用
+        let isFeeCalculated = false;
+        // 添加一个标志位来记录是否已经结束对话
+        let isConversationEnded = false;
         // 想在这里打印数据
         res.setHeader('Content-Type', 'text/event-stream;charset=utf-8');
         const jsonStream = new stream_1.Transform({
@@ -548,49 +552,107 @@ router.post('/chat/completions', async (req, res) => {
                             // 将返回的数据存入数据库
                             // 扣除相关
                             models_1.messageModel.addMessages([userMessageInfo, assistantInfo]);
-                            if (options.model.includes('gpt-4') && svipExpireTime < todayTime) {
-                                // GPT-4 非 SVIP 用户扣费逻辑，这里不再计算 tokens，直接扣除固定的 ratio
-                                const ratio = Number(aiRatioInfo.ai4_ratio);
-                                models_1.userModel.updataUserVIP({
-                                    id: user_id,
-                                    type: 'integral',
-                                    value: ratio,
-                                    operate: 'decrement'
-                                });
-                                const turnoverId = (0, utils_1.generateNowflakeId)(1)();
-                                models_1.turnoverModel.addTurnover({
-                                    id: turnoverId,
+                            if (!isFeeCalculated) {
+                                if (options.model.includes('gpt-4') && svipExpireTime < todayTime) {
+                                    // GPT-4 非 SVIP 用户扣费逻辑，这里不再计算 tokens，直接扣除固定的 ratio
+                                    const ratio = Number(aiRatioInfo.ai4_ratio);
+                                    models_1.userModel.updataUserVIP({
+                                        id: user_id,
+                                        type: 'integral',
+                                        value: ratio,
+                                        operate: 'decrement'
+                                    });
+                                    const turnoverId = (0, utils_1.generateNowflakeId)(1)();
+                                    models_1.turnoverModel.addTurnover({
+                                        id: turnoverId,
+                                        user_id,
+                                        describe: `对话(${options.model})`,
+                                        value: `-${ratio}积分`
+                                    });
+                                } else if (options.model.includes('gpt-3') && vipExpireTime < todayTime && svipExpireTime < todayTime) {
+                                    // GPT-3 非 VIP 或 SVIP 用户扣费逻辑，这里不再计算 tokens，直接扣除固定的 ratio
+                                    const ratio = Number(aiRatioInfo.ai3_ratio);
+                                    models_1.userModel.updataUserVIP({
+                                        id: user_id,
+                                        type: 'integral',
+                                        value: ratio,
+                                        operate: 'decrement'
+                                    });
+                                    const turnoverId = (0, utils_1.generateNowflakeId)(1)();
+                                    models_1.turnoverModel.addTurnover({
+                                        id: turnoverId,
+                                        user_id,
+                                        describe: `对话(${options.model})`,
+                                        value: `-${ratio}积分`
+                                    });
+                                }
+                                models_1.actionModel.addAction({
                                     user_id,
-                                    describe: `对话(${options.model})`,
-                                    value: `-${ratio}积分`
+                                    id: (0, utils_1.generateNowflakeId)(23)(),
+                                    ip,
+                                    type: 'chat',
+                                    describe: `对话(${options.model})`
                                 });
-                            } else if (options.model.includes('gpt-3') && vipExpireTime < todayTime && svipExpireTime < todayTime) {
-                                // GPT-3 非 VIP 或 SVIP 用户扣费逻辑，这里不再计算 tokens，直接扣除固定的 ratio
-                                const ratio = Number(aiRatioInfo.ai3_ratio);
-                                models_1.userModel.updataUserVIP({
-                                    id: user_id,
-                                    type: 'integral',
-                                    value: ratio,
-                                    operate: 'decrement'
-                                });
-                                const turnoverId = (0, utils_1.generateNowflakeId)(1)();
-                                models_1.turnoverModel.addTurnover({
-                                    id: turnoverId,
-                                    user_id,
-                                    describe: `对话(${options.model})`,
-                                    value: `-${ratio}积分`
-                                });
+                                // 计费
+                                isFeeCalculated = true;
+                                // 设置对话结束标志位为true
+                                isConversationEnded = true;
                             }
-                            models_1.actionModel.addAction({
-                                user_id,
-                                id: (0, utils_1.generateNowflakeId)(23)(),
-                                ip,
-                                type: 'chat',
-                                describe: `对话(${options.model})`
-                            });
                         }
                         else {
                             assistantInfo.content += jsonData.content;
+                            if (!isConversationEnded && !isFeeCalculated && assistantInfo.content.length >= 50) {
+                                // 结束存入数据库
+                                // 这里扣除一些东西
+                                // 将用户的消息存入数据库
+                                // 将返回的数据存入数据库
+                                // 扣除相关
+                                models_1.messageModel.addMessages([userMessageInfo, assistantInfo]);
+                                if (options.model.includes('gpt-4') && svipExpireTime < todayTime) {
+                                    // GPT-4 非 SVIP 用户扣费逻辑，这里不再计算 tokens，直接扣除固定的 ratio
+                                    const ratio = Number(aiRatioInfo.ai4_ratio);
+                                    models_1.userModel.updataUserVIP({
+                                        id: user_id,
+                                        type: 'integral',
+                                        value: ratio,
+                                        operate: 'decrement'
+                                    });
+                                    const turnoverId = (0, utils_1.generateNowflakeId)(1)();
+                                    models_1.turnoverModel.addTurnover({
+                                        id: turnoverId,
+                                        user_id,
+                                        describe: `对话(${options.model})`,
+                                        value: `-${ratio}积分`
+                                    });
+                                } else if (options.model.includes('gpt-3') && vipExpireTime < todayTime && svipExpireTime < todayTime) {
+                                    // GPT-3 非 VIP 或 SVIP 用户扣费逻辑，这里不再计算 tokens，直接扣除固定的 ratio
+                                    const ratio = Number(aiRatioInfo.ai3_ratio);
+                                    models_1.userModel.updataUserVIP({
+                                        id: user_id,
+                                        type: 'integral',
+                                        value: ratio,
+                                        operate: 'decrement'
+                                    });
+                                    const turnoverId = (0, utils_1.generateNowflakeId)(1)();
+                                    models_1.turnoverModel.addTurnover({
+                                        id: turnoverId,
+                                        user_id,
+                                        describe: `对话(${options.model})`,
+                                        value: `-${ratio}积分`
+                                    });
+                                }
+                                models_1.actionModel.addAction({
+                                    user_id,
+                                    id: (0, utils_1.generateNowflakeId)(23)(),
+                                    ip,
+                                    type: 'chat',
+                                    describe: `对话(${options.model})`
+                                });
+                                // 计费
+                                isFeeCalculated = true;
+                                // 设置对话结束标志位为true
+                                isConversationEnded = true;
+                            }
                         }
                     }
                 }
