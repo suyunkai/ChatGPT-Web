@@ -3,6 +3,8 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { ChatGpt, ChatsInfo } from '@/types'
 import { formatTime, generateChatInfo } from '@/utils'
 import { postRoomCreate, postRoomUpdateStatus, postRoomUpdateTitle, postMessageUpdateStatus, getRooms } from '@/request/api'
+import { getMysqlChats, getNowChats } from '../user/async'
+
 
 export interface ChatState {
   // 聊天对话
@@ -40,7 +42,7 @@ export interface ChatState {
 
 const chatStore = create<ChatState>()(
   persist(
-    (set, get) => ({
+    (set,get) => ({
       chats: [],
       selectChatId: '',
       addChat: () =>
@@ -101,9 +103,20 @@ const chatStore = create<ChatState>()(
           }
         }),
       changeSelectChatId: (id) =>
-        set(() => ({
-          selectChatId: id
-        })),
+        set((state: ChatState) => {
+          let newChats: ChatsInfo[] = [];
+          // 查找mysql中对话rooms
+          getMysqlChats(id.toString()).then(mysqlChats => {
+            newChats = mysqlChats;
+          }).catch(error => {
+            console.error(error);
+          });
+          console.log('newChats', newChats)
+          return {
+            // chats: newChats,
+            selectChatId: id
+          }
+        }),
       delChatMessage: (id, messageId) =>
         set((state: ChatState) => {
           const newChats = state.chats.map((c) => {

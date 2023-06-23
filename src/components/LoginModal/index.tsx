@@ -55,14 +55,6 @@ export function LoginCard(props: {
           userAsync
             .fetchLogin({ ...e })
             .then((res) => {
-              // 登录成功后将chats信息缓存到浏览器
-              getMysqlChats().then(mysqlChats => {
-                updateChats(mysqlChats);
-                changeSelectChatId(mysqlChats[0].id)
-                console.log('更新浏览器对话缓存成功', mysqlChats)
-              }).catch(error => {
-                console.error(error);
-              });
               if (res.code) {
                 reject(false)
                 return

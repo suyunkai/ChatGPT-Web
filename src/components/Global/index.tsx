@@ -59,78 +59,70 @@ function Global(props: Props) {
     }
   }
 
-  async function getMysqlChats(): Promise<Array<ChatsInfo>> {
-    return new Promise((resolve, reject) => {
-      getRooms().then(roomsResult => {
-        if(roomsResult.code !== -1 && roomsResult.data.count >= 1){
-          let mysqlChats: Array<ChatsInfo> = [];
-          let promises: Array<Promise<void>> = [];
-          roomsResult.data.rows.forEach(roomElement => {
-            let chatInfo: ChatsInfo = {
-              path: roomElement.room_id,
-              id: roomElement.room_id,
-              name: roomElement.title,
-              data: []
-            };
-            let gptInfoArr : Array<ChatGpt> = [];
-            let promise = chatHistory({roomId: roomElement.room_id}).then(messageResult => {
-              messageResult.data.rows.forEach(messageElement => {
-                let gptInfo: ChatGpt = {
-                  id: messageElement.message_id,
-                  text: messageElement.content,
-                  dateTime: messageElement.create_time,
-                  status: 'pass' ,
-                  role: messageElement.role,
-                  requestOptions: {
-                    prompt: messageElement.content,
-                    options: {
-                      model: messageElement.model,
-                      temperature: messageElement.temperature,
-                      presence_penalty: parseFloat(messageElement.presence_penalty),
-                      frequency_penalty: messageElement.frequency_penalty,
-                      max_tokens: messageElement.max_tokens,
-                    },
-                    parentMessageId: messageElement.parent_message_id,
-                    selectChatIdStr: messageElement.room_id,
-                    userMessageId: messageElement.message_id,
-                    assistantMessageId: messageElement.message_id,
+  async function getMysqlChats(nowId: string): Promise<Array<ChatsInfo>> {
+    try {
+      const roomsResult = await getRooms();
+      if (roomsResult.code !== -1 && roomsResult.data.count >= 1) {
+        const mysqlChats: Array<ChatsInfo> = [];
+        const promises: Array<Promise<void>> = [];
+        for (const roomElement of roomsResult.data.rows) {
+          const chatInfo: ChatsInfo = {
+            path: roomElement.room_id,
+            id: roomElement.room_id,
+            name: roomElement.title,
+            data: [],
+          };
+          if(nowId === roomElement.room_id){
+            const gptInfoArr: Array<ChatGpt> = [];
+            const messageResult = await chatHistory({ roomId: roomElement.room_id });
+            messageResult.data.rows.forEach((messageElement) => {
+              const gptInfo: ChatGpt = {
+                id: messageElement.message_id,
+                text: messageElement.content,
+                dateTime: messageElement.create_time,
+                status: 'pass',
+                role: messageElement.role,
+                requestOptions: {
+                  prompt: messageElement.content,
+                  options: {
+                    model: messageElement.model,
+                    temperature: messageElement.temperature,
+                    presence_penalty: parseFloat(messageElement.presence_penalty),
+                    frequency_penalty: messageElement.frequency_penalty,
+                    max_tokens: messageElement.max_tokens,
                   },
-                }
-                gptInfoArr.push(gptInfo)
-              })
-              chatInfo =  {
-                ...chatInfo,
-                data: gptInfoArr
+                  parentMessageId: messageElement.parent_message_id,
+                  selectChatIdStr: messageElement.room_id,
+                  userMessageId: messageElement.message_id,
+                  assistantMessageId: messageElement.message_id,
+                },
               };
-              mysqlChats.push(chatInfo);
+              gptInfoArr.push(gptInfo);
             });
-            promises.push(promise);
-          });
-          Promise.all(promises).then(() => {
-            resolve(mysqlChats);
-          }).catch(error => {
-            reject(error);
-          });
-        } else {
-          resolve([]);
+            chatInfo.data = gptInfoArr;
+          }
+          mysqlChats.push(chatInfo);
         }
-      }).catch(error => {
-        reject(error);
-      });
-    });
+        return mysqlChats;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      throw error;
+    }
   }
+  
 
   useEffect(() => {
     if (chats.length <= 0) {
       addChat()
     } else {
-      // 查找mysql中对话rooms
-      getMysqlChats().then(mysqlChats => {
+      const id = chats[0].id
+      getMysqlChats(id).then(mysqlChats => {
         updateChats(mysqlChats);
       }).catch(error => {
         console.error(error);
       });
-      const id = chats[0].id
       changeSelectChatId(id)
     }
 	configAsync.fetchConfig()

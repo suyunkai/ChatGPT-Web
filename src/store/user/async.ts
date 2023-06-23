@@ -12,7 +12,7 @@ export async function fetchLogin(params: RequestLoginParams) {
   return response
 }
 
-export async function getMysqlChats(): Promise<Array<ChatsInfo>> {
+export async function getMysqlChats(nowId: string): Promise<Array<ChatsInfo>> {
   try {
     const roomsResult = await getRooms();
     if (roomsResult.code !== -1 && roomsResult.data.count >= 1) {
@@ -25,33 +25,35 @@ export async function getMysqlChats(): Promise<Array<ChatsInfo>> {
           name: roomElement.title,
           data: [],
         };
-        const gptInfoArr: Array<ChatGpt> = [];
-        const messageResult = await chatHistory({ roomId: roomElement.room_id });
-        messageResult.data.rows.forEach((messageElement) => {
-          const gptInfo: ChatGpt = {
-            id: messageElement.message_id,
-            text: messageElement.content,
-            dateTime: messageElement.create_time,
-            status: 'pass',
-            role: messageElement.role,
-            requestOptions: {
-              prompt: messageElement.content,
-              options: {
-                model: messageElement.model,
-                temperature: messageElement.temperature,
-                presence_penalty: parseFloat(messageElement.presence_penalty),
-                frequency_penalty: messageElement.frequency_penalty,
-                max_tokens: messageElement.max_tokens,
+        if(nowId === roomElement.room_id){
+          const gptInfoArr: Array<ChatGpt> = [];
+          const messageResult = await chatHistory({ roomId: roomElement.room_id });
+          messageResult.data.rows.forEach((messageElement) => {
+            const gptInfo: ChatGpt = {
+              id: messageElement.message_id,
+              text: messageElement.content,
+              dateTime: messageElement.create_time,
+              status: 'pass',
+              role: messageElement.role,
+              requestOptions: {
+                prompt: messageElement.content,
+                options: {
+                  model: messageElement.model,
+                  temperature: messageElement.temperature,
+                  presence_penalty: parseFloat(messageElement.presence_penalty),
+                  frequency_penalty: messageElement.frequency_penalty,
+                  max_tokens: messageElement.max_tokens,
+                },
+                parentMessageId: messageElement.parent_message_id,
+                selectChatIdStr: messageElement.room_id,
+                userMessageId: messageElement.message_id,
+                assistantMessageId: messageElement.message_id,
               },
-              parentMessageId: messageElement.parent_message_id,
-              selectChatIdStr: messageElement.room_id,
-              userMessageId: messageElement.message_id,
-              assistantMessageId: messageElement.message_id,
-            },
-          };
-          gptInfoArr.push(gptInfo);
-        });
-        chatInfo.data = gptInfoArr;
+            };
+            gptInfoArr.push(gptInfo);
+          });
+          chatInfo.data = gptInfoArr;
+        }
         mysqlChats.push(chatInfo);
       }
       return mysqlChats;
@@ -61,6 +63,17 @@ export async function getMysqlChats(): Promise<Array<ChatsInfo>> {
   } catch (error) {
     throw error;
   }
+}
+
+export async function getNowChats(nowId: string) {
+  const { updateChats } = chatStore()
+  // 查找mysql中对话rooms
+  getMysqlChats(nowId).then(mysqlChats => {
+    console.log('mysqlChats',mysqlChats)
+    updateChats(mysqlChats);
+  }).catch(error => {
+    console.error(error);
+  });
 }
 
 // 获取用户信息

@@ -15,6 +15,7 @@ import { filterObjectNull, formatTime, generateUUID, handleChatData } from '@/ut
 import { useScroll } from '@/hooks/useScroll'
 import useDocumentResize from '@/hooks/useDocumentResize'
 import Layout from '@/components/Layout'
+import { getMysqlChats } from '@/store/user/async'
 
 function ChatPage() {
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -31,7 +32,8 @@ function ChatPage() {
     setChatInfo,
     setChatDataInfo,
     clearChatMessage,
-    delChatMessage
+    delChatMessage,
+    updateChats
   } = chatStore()
 
   const bodyResize = useDocumentResize()
@@ -330,9 +332,16 @@ ${JSON.stringify(response, null, 4)}
         menuProps={{
           onClick: (r) => {
             const id = r.key.replace('/', '')
+            // 查找mysql中对话rooms
+            getMysqlChats(id).then(mysqlChats => {
+              updateChats(mysqlChats);
+            }).catch(error => {
+              console.error(error);
+            });
             if (selectChatId !== id) {
               changeSelectChatId(id)
             }
+
           }
         }}
       >
