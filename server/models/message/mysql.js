@@ -10,6 +10,12 @@ exports.messageMysql = db_1.sequelizeExample.define('message', {
     user_id: {
         type: sequelize_1.DataTypes.NUMBER
     },
+    room_id: {
+        type: sequelize_1.DataTypes.STRING
+    },
+    message_id: {
+        type: sequelize_1.DataTypes.STRING
+    },
     role: {
         type: sequelize_1.DataTypes.STRING
     },

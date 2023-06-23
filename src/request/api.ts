@@ -9,7 +9,9 @@ import {
   SigninInfo,
   SubscriptionInfo,
   TurnoverInfo,
-  UserInfo
+  RoomInfo,
+  MessageInfo,
+  UserInfo,
 } from '@/types'
 import request from '.'
 import { formatTime } from '@/utils'
@@ -40,6 +42,37 @@ export function postChatCompletions(
 ) {
   return request.postStreams<Response>('/api/chat/completions', params, config)
 }
+
+//请求创建room
+export function postRoomCreate(params: { title: string, roomId: string }){
+  return request.post('/api/roomcreate', params)
+}
+
+//请求更新room status
+export function postRoomUpdateStatus(params: {  roomId: string }){
+  return request.post('/api/roomupdatestatus', params)
+}
+
+//请求更新room title
+export function postRoomUpdateTitle(params: {  title: string, roomId: string }){
+  return request.post('/api/roomupdatetitle', params)
+}
+
+//请求更新message status
+export function postMessageUpdateStatus(params: { roomId: string }){
+  return request.post('/api/messageupdatestatus', params)
+}
+
+//获取user_id 所有room
+export function getRooms(){
+  return request.get<{ count: number; rows: Array<RoomInfo> }>('/api/getrooms')
+}
+
+//获取user_id room_id下所有历史记录
+export function chatHistory(params: { roomId: string }){
+  return request.get<{ count: number; rows: Array<MessageInfo> }>('/api/chathistory', params)
+}
+
 
 // 请求绘画
 export function postImagesGenerations(

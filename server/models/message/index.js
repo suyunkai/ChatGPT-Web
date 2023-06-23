@@ -23,8 +23,28 @@ async function getMessages({ page, page_size }, where) {
     });
     return find;
 }
+
+async function getRoomMessages(where) {
+    const find = await mysql_2.default.findAndCountAll({
+        where,
+        order: [['create_time', 'ASC']],
+    });
+    return find;
+}
+
+async function updateMessages(data, where) {
+    const update = await mysql_2.default.update(data, {
+        where: {
+            ...where
+        }
+    });
+    return update;
+}
+
 exports.default = {
     addMessages,
-    getMessages
+    getMessages,
+    updateMessages,
+    getRoomMessages
 };
 //# sourceMappingURL=index.js.map

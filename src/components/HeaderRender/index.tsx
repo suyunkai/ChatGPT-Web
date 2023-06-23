@@ -12,12 +12,12 @@ import {
   UserOutlined,
   WalletOutlined
 } from '@ant-design/icons'
-import { userStore } from '@/store'
+import { chatStore, userStore } from '@/store'
 import { Avatar, Button, Dropdown } from 'antd'
 import { getEmailPre } from '@/utils'
 import MenuList from '../MenuList'
 import { useNavigate } from 'react-router-dom'
-import { fetchUserInfo } from '@/store/user/async'
+import { fetchUserInfo, getMysqlChats } from '@/store/user/async'
 
 function HeaderRender(props: HeaderViewProps, defaultDom: React.ReactNode) {
   const navigate = useNavigate()
@@ -47,7 +47,9 @@ function HeaderRender(props: HeaderViewProps, defaultDom: React.ReactNode) {
       // 获取用户信息
       fetchUserInfo()
         .then((res) => {
-          if (res.code) return
+          if (res.code) {
+            return
+          }
           setBalance((b) => ({ ...b, number: res.data.integral, loading: false }))
         })
         .finally(() => {

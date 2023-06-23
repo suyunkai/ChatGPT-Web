@@ -59,7 +59,7 @@ router.get('/send_sms', async (req, res) => {
             </div>
             <p style="font-size: 16px; color: #111; text-align: center; line-height: 1.5;">此验证码将在 10 分钟后失效，非本人操作请忽略。</p>
             <hr style="border: none; border-top: 1px solid #eaeaea; margin: 30px 0;">
-            <p style="font-size: 14px; color: #999; text-align: center;">点击访问：<a href="https://ai.lightai.io" style="color: #007AFF; text-decoration: none;">AI 助手</a></p>
+            <p style="font-size: 14px; color: #999; text-align: center;">点击访问：<a href="https://chat.nonezero.top" style="color: #007AFF; text-decoration: none;">AI 助手</a></p>
         </div>
 `;
         if (emailRegex.test(source)) {
@@ -325,9 +325,10 @@ router.post('/chat/completions', async (req, res) => {
         id: user_id
     });
     const ip = (0, utils_1.getClientIP)(req);
-    const { prompt, parentMessageId } = req.body;
+    const { prompt, parentMessageId, selectChatIdStr, userMessageId: oldUserMessageId, assistantMessageId: oldAssistantMessageId } = req.body;
+
     // 提前从 req.body.options 中取出 model 的值
-    const model = req.body.options?.model;
+    const model = req.body.options?.model;   
 
     let max_tokens_value;
 
@@ -504,6 +505,8 @@ router.post('/chat/completions', async (req, res) => {
     const userMessageId = (0, utils_1.generateNowflakeId)(1)();
     const userMessageInfo = {
         user_id,
+        room_id: selectChatIdStr,
+        message_id: oldUserMessageId,
         id: userMessageId,
         role: 'user',
         content: prompt,
@@ -512,6 +515,8 @@ router.post('/chat/completions', async (req, res) => {
     };
     const assistantInfo = {
         user_id,
+        room_id: selectChatIdStr,
+        message_id: oldAssistantMessageId,
         id: assistantMessageId,
         role: 'assistant',
         content: '',
@@ -598,6 +603,118 @@ router.post('/chat/completions', async (req, res) => {
     const data = await chat.json();
     res.status(chat.status).json(data);
 });
+
+//创建room
+router.post('/roomcreate', async (req, res) => {
+    const user_id = req?.user_id;
+    if (!user_id) {
+        res.status(500).json((0, utils_1.httpBody)(-1, '服务端错误'));
+        return;
+    }
+    const { title, roomId } = req.body;
+    const id = (0, utils_1.generateNowflakeId)(1)();
+    const insertRoomData = {
+        id : id,
+        room_id : roomId,
+        status: 0,
+        title : title,
+        user_id: user_id,
+    };
+    const addRes = await models_1.roomModel.addRoom(insertRoomData);
+    console.log('room create---', addRes)
+    res.json((0, utils_1.httpBody)(0, addRes, `创建room成功`));
+});
+
+//更新room status
+router.post('/roomupdatestatus', async (req, res) => {
+    const user_id = req?.user_id;
+    if (!user_id) {
+        res.status(500).json((0, utils_1.httpBody)(-1, '服务端错误'));
+        return;
+    }
+    const { title, roomId } = req.body;
+
+    const updateRes = await models_1.roomModel.updateRoomInfo({
+        title,
+        status: 1,
+    }, {
+        room_id: roomId
+    });
+
+    res.json((0, utils_1.httpBody)(0, updateRes, `更新room status成功`));
+});
+
+//更新room title
+router.post('/roomupdatetitle', async (req, res) => {
+    const user_id = req?.user_id;
+    if (!user_id) {
+        res.status(500).json((0, utils_1.httpBody)(-1, '服务端错误'));
+        return;
+    }
+    const { title, roomId } = req.body;
+
+    const updateRes = await models_1.roomModel.updateRoomInfo({
+        title,
+    }, {
+        room_id: roomId
+    });
+
+    res.json((0, utils_1.httpBody)(0, updateRes, `更新room title成功`));
+});
+
+
+//更新message status
+router.post('/messageupdatestatus', async (req, res) => {
+    const user_id = req?.user_id;
+    if (!user_id) {
+        res.status(500).json((0, utils_1.httpBody)(-1, '服务端错误'));
+        return;
+    }
+    const { roomId } = req.body;
+
+    const updateRes = await models_1.messageModel.updateMessages({
+        status: 1,
+    }, {
+        room_id: roomId
+    });
+
+    res.json((0, utils_1.httpBody)(0, updateRes, `更新room title成功`));
+});
+
+//得到所有rooms
+router.get('/getrooms', async (req, res, next) => {
+    const user_id = req?.user_id;
+    if (!user_id) {
+        res.status(500).json((0, utils_1.httpBody)(-1, '服务端错误'));
+        return;
+    }
+
+    const rooms = await models_1.roomModel.getRooms({
+        user_id: user_id,
+        status: 0
+    });
+
+    res.json((0, utils_1.httpBody)(0, rooms, `获取rooms成功`));
+});
+
+//根据room_id获取所有messages
+router.get('/chathistory', async (req, res, next) => {
+    const user_id = req?.user_id;
+    if (!user_id) {
+        res.status(500).json((0, utils_1.httpBody)(-1, '服务端错误'));
+        return;
+    }
+    const { roomId } = req.query;
+    const roomMesages = await models_1.messageModel.getRoomMessages({
+        user_id: user_id,
+        status: 0,
+        room_id: roomId
+    });
+
+    res.json((0, utils_1.httpBody)(0, roomMesages, `获取roomMessages成功`));
+});
+
+
 // 获取商品
 router.get('/product', async (req, res, next) => {
     const { page, page_size } = (0, utils_1.pagingData)({

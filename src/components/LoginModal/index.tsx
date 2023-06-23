@@ -1,5 +1,7 @@
 import { getCode } from '@/request/api'
+import { chatStore } from '@/store'
 import { userAsync } from '@/store/async'
+import { getMysqlChats } from '@/store/user/async'
 import { RequestLoginParams } from '@/types'
 import {
   HeartFilled,
@@ -28,7 +30,7 @@ export function LoginCard(props: {
 }) {
 
   const [loginType, setLoginType] = useState<LoginType>('code');
-
+  const { updateChats , changeSelectChatId} = chatStore()
   return (
     <LoginForm<RequestLoginParams>
       form={props.form}
@@ -53,6 +55,14 @@ export function LoginCard(props: {
           userAsync
             .fetchLogin({ ...e })
             .then((res) => {
+              // 登录成功后将chats信息缓存到浏览器
+              getMysqlChats().then(mysqlChats => {
+                updateChats(mysqlChats);
+                changeSelectChatId(mysqlChats[0].id)
+                console.log('更新浏览器对话缓存成功', mysqlChats)
+              }).catch(error => {
+                console.error(error);
+              });
               if (res.code) {
                 reject(false)
                 return

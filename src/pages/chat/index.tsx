@@ -56,6 +56,7 @@ function ChatPage() {
     return chatList[0].data
   }, [selectChatId, chats])
 
+
   // 创建对话按钮
   const CreateChat = () => {
     return (
@@ -82,19 +83,25 @@ function ChatPage() {
     )
   }
 
+
   // 对接服务端方法
   async function serverChatCompletions({
     requestOptions,
     signal,
     userMessageId,
-    assistantMessageId
+    assistantMessageId,
   }: {
     userMessageId: string
     signal: AbortSignal
     requestOptions: RequestChatOptions
     assistantMessageId: string
   }) {
-    const response = await postChatCompletions(requestOptions, {
+    const newRequestOptions = {
+      ...requestOptions,
+      userMessageId: userMessageId,
+      assistantMessageId: assistantMessageId,
+    };
+    const response = await postChatCompletions(newRequestOptions, {
       options: {
         signal
       }
@@ -184,11 +191,13 @@ ${JSON.stringify(response, null, 4)}
       setLoginModal(true)
       return
     }
+    const selectChatIdStr = selectChatId.toString()
     const parentMessageId = chats.filter((c) => c.id === selectChatId)[0].id
     const userMessageId = generateUUID()
     const requestOptions = {
       prompt: vaule,
       parentMessageId,
+      selectChatIdStr,
       options: filterObjectNull({
         ...config
       })
@@ -217,7 +226,7 @@ ${JSON.stringify(response, null, 4)}
       requestOptions,
       signal,
       userMessageId,
-      assistantMessageId
+      assistantMessageId,
     })
   }
 
