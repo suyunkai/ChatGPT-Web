@@ -50,7 +50,7 @@ function MessagePage() {
             title: '状态值',
             dataIndex: 'status',
             width: 100,
-            render: (_, data) => <Tag color={data.status ? 'green' : 'red'}>{data.status ? '正常' : '异常'}</Tag>
+            render: (_, data) => <Tag color={data.status ? 'green' : 'red'}>{data.status ? '异常' : '正常'}</Tag>
         },
         {
             title: '创建时间',
