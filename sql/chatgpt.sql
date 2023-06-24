@@ -309,8 +309,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `nickname`, `account`, `password`, `avatar`, `role`, `integral`, `vip_expire_time`, `svip_expire_time`, `status`, `ip`, `create_time`, `update_time`) VALUES
-(61874584357441536, NULL, '123@q.com', 'e07cf7b22ed1c238d5f0dd73eee65bcd', 'https://image.lightai.io/icon/header.png', 'user', 100, '2023-06-19', '2023-06-19', 1, '185.212.58.224', '2023-06-20 17:47:30', '2023-06-20 17:47:30');
-(61833690208014336, '管理员', 'winstondz1011@gmail.com', 'a66abb5684c45962d887564f08346e8d', 'https://image.lightai.io/icon/header.png', 'administrator', 100, '2024-01-01', '2024-01-01', 1, '113.87.180.24', '2023-06-20 15:05:00', '2023-06-20 15:17:51'),
+(61874584357441536, '管理员', '123@q.com', 'e07cf7b22ed1c238d5f0dd73eee65bcd', 'https://image.lightai.io/icon/header.png', 'administrator', 100, '2024-01-01', '2024-01-01', 1, '185.212.58.224', '2023-06-20 17:47:30', '2023-06-20 17:47:30');
 --
 -- 转储表的索引
 --

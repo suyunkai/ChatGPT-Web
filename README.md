@@ -42,17 +42,12 @@
 
 ## 前端
 
-### Vercel 部署
-
-如果你将其托管在自己的 Vercel 服务器上，可点击 deploy 按钮来开始你的部署！
-
-[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/vastxie/ChatGpt-Web)
 
 **环境变量**
 
 ```
 后端地址
-VITE_APP_REQUEST_HOST: https://server.lightai.io
+VITE_APP_REQUEST_HOST: https://xxx.xxx.xxx
 
 APP 名称&Logo
 VITE_APP_TITLE: ChatWeb
@@ -64,7 +59,7 @@ VITE_APP_LOGO: https://image.lightai.io/icon/logo.svg
 
 ```
 ## 拉取项目
-git clone https://github.com/vastxie/ChatGpt-Web.git
+git clone https://github.com/Winston1011/ChatGPT-Web.git
 cd ChatGpt-Web
 
 ## 安装依赖（注意先安装好 node 及 yarn）
@@ -87,6 +82,7 @@ location / {
 ### 后端
 
 导入 MySQL 数据库文件： `sql/chatgpt.sql`
+历史对话功能记得新增room.sql和更改message表
 
 在 `server/config/index.js` 中修改 `后端端口` `数据库` `邮箱` 等配置
 
