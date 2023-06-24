@@ -59,7 +59,7 @@ VITE_APP_LOGO: https://image.lightai.io/icon/logo.svg
 
 ```
 ## 拉取项目
-git clone [https://github.com/Winston1011/ChatGpt-Web.git](https://github.com/Winston1011/ChatGPT-Web.git)
+git clone https://github.com/Winston1011/ChatGPT-Web.git
 cd ChatGpt-Web
 
 ## 安装依赖（注意先安装好 node 及 yarn）
