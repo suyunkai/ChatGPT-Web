@@ -7,10 +7,10 @@ function getConfig(key) {
 		port: 3200,  // 端口号，确保没有被占用
 		mysql_config: {  // MySQL配置信息
 			dialect: 'mysql',
-			host: '34.92.176.183',  // 数据库主机地址
+			host: 'xxxx',  // 数据库主机地址
 			port: 3306,  // 数据库端口号，默认3306
 			username: 'chatgptv2',  // 数据库用户名
-			password: 'Winston110150',  // 数据库密码
+			password: 'chatgptv2',  // 数据库密码
 			database: 'chatgptv2',  // 数据库名称
 			timezone: '+08:00',
 			dialectOptions: {
@@ -20,19 +20,19 @@ function getConfig(key) {
 		},
 		redis_config: {  // Redis配置信息，一般不用改
 			type: 'redis',
-			host: '34.92.176.183',
+			host: 'xxxx',
 			port: 6379,
-			password: 'Winston110150'
+			password: 'xxxx'
 		},
-		email: '1071442894@qq.com',  // 邮件地址
+		email: 'xxxx',  // 邮件地址
 		email_config: {  // 邮件配置信息
 			host: 'smtp.qq.com',  // SMTP服务器地址
 			port: 465,  // SMTP服务器端口号
 			ignoreTLS: false,  // 是否忽略TLS
 			secure: true,  // 是否使用安全连接
 			auth: {
-				user: '1071442894@qq.com',  // SMTP服务器用户名
-				pass: 'gachwkiphvyjbdad'  // SMTP服务器密码
+				user: 'xxxx',  // SMTP服务器用户名
+				pass: 'xxxx'  // SMTP服务器密码
 			}
 		}
 	};
