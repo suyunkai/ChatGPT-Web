@@ -99,7 +99,7 @@ pm2 start index.js --name chatweb --watch
 
 ## 更多
 
-关于 `node` `yarn` `pm2` 以及 Vercle 的一些设置可以自行搜索或向[GPT](https://ai.ligthai.io) 提问
+关于 `node` `yarn` `pm2` 以及 Vercle 的一些设置可以自行搜索或向[GPT](https://chat.nonezero.top) 提问
 
 ## 贡献者
 感谢项目原作者 [79E](https://github.com/79E) 以及所有的 [项目贡献者](https://github.com/vastxie/ChatGPT-Web/graphs/contributors)
