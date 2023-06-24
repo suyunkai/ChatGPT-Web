@@ -604,10 +604,8 @@ router.post('/chat/completions', async (req, res) => {
                             if (!isConversationEnded && !isFeeCalculated && assistantInfo.content.length >= 50) {
                                 // 结束存入数据库
                                 // 这里扣除一些东西
-                                // 将用户的消息存入数据库
                                 // 将返回的数据存入数据库
                                 // 扣除相关
-                                models_1.messageModel.addMessages([userMessageInfo, assistantInfo]);
                                 if (options.model.includes('gpt-4') && svipExpireTime < todayTime) {
                                     // GPT-4 非 SVIP 用户扣费逻辑，这里不再计算 tokens，直接扣除固定的 ratio
                                     const ratio = Number(aiRatioInfo.ai4_ratio);
