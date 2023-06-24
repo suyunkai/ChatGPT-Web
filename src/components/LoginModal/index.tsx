@@ -36,7 +36,7 @@ export function LoginCard(props: {
       form={props.form}
       logo={import.meta.env.VITE_APP_LOGO}
       title=""
-      subTitle="全网最便宜的人工智能对话"
+      subTitle="全网最快最好用的人工智能AI"
       // actions={(
       //   <Space>
       //     <HeartFilled />
