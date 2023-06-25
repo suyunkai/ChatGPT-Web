@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { getCode } from '@/request/api'
 import { chatStore } from '@/store'
 import { userAsync } from '@/store/async'
@@ -61,6 +62,11 @@ export function LoginCard(props: {
               }
               props.onSuccess?.()
               resolve(true)
+              getMysqlChats('1111').then(mysqlChats => {
+                updateChats(mysqlChats);
+              }).catch(error => {
+                console.error(error);
+              });
             })
             .catch(() => {
               reject(false)

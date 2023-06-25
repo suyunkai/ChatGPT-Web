@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { CommentOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Button, Modal, Popconfirm, Space, Tabs, Select, message } from 'antd'
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
@@ -16,6 +17,7 @@ import { useScroll } from '@/hooks/useScroll'
 import useDocumentResize from '@/hooks/useDocumentResize'
 import Layout from '@/components/Layout'
 import { getMysqlChats } from '@/store/user/async'
+import LoadingModal from '@/components/LoadingModal'
 
 function ChatPage() {
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -42,6 +44,25 @@ function ChatPage() {
   const [roleConfigModal, setRoleConfigModal] = useState({
     open: false
   })
+  const [loading, setLoading] = useState(false);
+
+  const handleMenuClick = (r: { key: string }) => {
+    const id = r.key.replace('/', '');
+    setLoading(true); // 设置 loading 为 true
+    getMysqlChats(id)
+      .then((mysqlChats) => {
+        updateChats(mysqlChats);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => {
+        setLoading(false); // 设置 loading 为 false
+      });
+    if (selectChatId !== id) {
+      changeSelectChatId(id);
+    }
+  };
 
   useLayoutEffect(() => {
     if (scrollRef) {
@@ -233,6 +254,7 @@ ${JSON.stringify(response, null, 4)}
   }
 
   return (
+    
     <div className={styles.chatPage}>
       <Layout
         menuExtraRender={() => <CreateChat />}
@@ -329,20 +351,22 @@ ${JSON.stringify(response, null, 4)}
             </Space>
           )
         }}
+        // menuProps={{
+        //   onClick: (r) => {
+        //     const id = r.key.replace('/', '')
+        //     // 查找mysql中对话rooms
+        //     getMysqlChats(id).then(mysqlChats => {
+        //       updateChats(mysqlChats);
+        //     }).catch(error => {
+        //       console.error(error);
+        //     });
+        //     if (selectChatId !== id) {
+        //       changeSelectChatId(id)
+        //     }
+        //   },
+        // }}
         menuProps={{
-          onClick: (r) => {
-            const id = r.key.replace('/', '')
-            // 查找mysql中对话rooms
-            getMysqlChats(id).then(mysqlChats => {
-              updateChats(mysqlChats);
-            }).catch(error => {
-              console.error(error);
-            });
-            if (selectChatId !== id) {
-              changeSelectChatId(id)
-            }
-
-          }
+          onClick: handleMenuClick,
         }}
       >
         <div className={styles.chatPage_container}>
@@ -363,7 +387,8 @@ ${JSON.stringify(response, null, 4)}
                   />
                 )
               })}
-              {chatMessages.length <= 0 && <Reminder />}
+              {(chatMessages.length <= 0 && loading === false) && <Reminder />}
+              {loading && <LoadingModal />}
             </div>
           </div>
           <div className={styles.chatPage_container_two}>

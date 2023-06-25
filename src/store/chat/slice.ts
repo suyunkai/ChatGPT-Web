@@ -49,7 +49,7 @@ const chatStore = create<ChatState>()(
         set((state: ChatState) => {
           const info = generateChatInfo()
           // 新增room
-          postRoomCreate({ title: "New Chat", roomId: info.id })
+          postRoomCreate({ title: 'New Chat', roomId: info.id })
             .then((res) => {
               if (res.code) return
             })

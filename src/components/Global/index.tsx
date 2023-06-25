@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-useless-catch */
 import { chatStore, configStore } from '@/store'
 import { configAsync } from '@/store/async'
 import { useEffect, useLayoutEffect } from 'react'

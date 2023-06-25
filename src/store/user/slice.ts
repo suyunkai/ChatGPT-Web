@@ -5,6 +5,8 @@ import { ResponseLoginData, UserInfo } from '@/types'
 export interface userState {
   // 登录弹窗开关
   loginModal: boolean
+  // 切换对话开关
+  loadingModal: boolean
   // 用户信息
   user_info: UserInfo | undefined
   // 登陆Token
@@ -21,6 +23,7 @@ const userStore = create<userState>()(
   persist(
     (set, get) => ({
       loginModal: false,
+      loadingModal: false,
       user_info: undefined,
       token: undefined,
       setLoginModal: (value) => set({ loginModal: value }),

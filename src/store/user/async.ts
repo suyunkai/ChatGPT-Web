@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable no-useless-catch */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ChatGpt, ChatsInfo, RequestLoginParams } from '@/types'
 import userStore from '../user/slice'
 import { chatHistory, getRooms, getUserInfo, postLogin, putUserPassword } from '@/request/api'
