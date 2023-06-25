@@ -49,11 +49,18 @@ async function editToken(id, data) {
     });
     return edit;
 }
+
+async function editToken1(data) {
+    const edit = await mysql_1.default.upsert(data);
+    return edit;
+}
+
 exports.default = {
     getOneToken,
     getTokens,
     delToken,
     addToken,
-    editToken
+    editToken,
+    editToken1,
 };
 //# sourceMappingURL=index.js.map

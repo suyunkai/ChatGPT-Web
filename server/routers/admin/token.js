@@ -42,8 +42,16 @@ router.put('/token', async function (req, res, next) {
         res.json((0, utils_1.httpBody)(-1, '缺少必要参数'));
         return;
     }
-    const editRes = await models_1.tokenModel.editToken(id, (0, utils_1.filterObjectNull)({
-        key, host, remarks, status, models
+    // const editRes = await models_1.tokenModel.editToken(id, (0, utils_1.filterObjectNull)({
+    //     key, host, remarks, status, models
+    // }));
+    const editRes = await models_1.tokenModel.editToken1((0, utils_1.filterObjectNull)({
+        id, 
+        key, 
+        host, 
+        remarks, 
+        models,
+        status, 
     }));
     res.json((0, utils_1.httpBody)(0, editRes));
 });
