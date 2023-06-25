@@ -327,29 +327,29 @@ router.post('/chat/completions', async (req, res) => {
     const ip = (0, utils_1.getClientIP)(req);
     const { prompt, parentMessageId, selectChatIdStr, userMessageId: oldUserMessageId, assistantMessageId: oldAssistantMessageId } = req.body;
 
-    // 提前从 req.body.options 中取出 model 的值
+    // 取出options值
     const model = req.body.options?.model;   
+    const temperature = req.body.options?.temperature;  
+    const presence_penalty = req.body.options?.presence_penalty;   
+    const frequency_penalty = req.body.options?.frequency_penalty;   
+    let max_tokens_value = req.body.options?.max_tokens; 
 
-    let max_tokens_value;
-
-    if (model.includes('gpt-3.5-turbo-16k')) {
-        max_tokens_value = 8000;
-    } else if (model.includes('gpt-3.5-turbo')) {
-        max_tokens_value = 2000;
-    } else if (model.includes('gpt-4')) {
-        max_tokens_value = 4000;
-    } else {
-        max_tokens_value = 2000;
+    if (model.includes('gpt-4')) {
+        max_tokens_value = 4096;
+    } else if(model === 'gpt-3.5-trubo' && max_tokens_value >= 2048){
+        max_tokens_value = 2048;
     }
 
     const options = {
-        frequency_penalty: 0,
+        frequency_penalty: frequency_penalty ?? 0,
         model,
-        presence_penalty: 0,
-        temperature: 0.8,
+        presence_penalty: presence_penalty ?? 0,
+        temperature: temperature ?? 0.5,
         ...req.body.options,
-        max_tokens: max_tokens_value
+        max_tokens: max_tokens_value ?? 2048
     };
+
+    console.log('chat options', options)
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -469,7 +469,10 @@ router.post('/chat/completions', async (req, res) => {
 
         historyMessages.unshift({
             role: 'system',
-            content: `Current time: ${currentTimeString}`
+            content: `From now on, accept new prompt:
+            You are ChatGPT, a large language model trained by OpenAI, based on the GPT-4 architecture.
+            When we converse, I don't need to ask further questions; you will provide me with detailed and comprehensive answers directly! I really dislike it when a topic requires many questions for you to provide a complete and comprehensive response.
+            Knowledge cutoff: 2023-06.Current time: ${currentTimeString}`
         });
     }
 
@@ -682,7 +685,7 @@ router.post('/roomcreate', async (req, res) => {
     };
     const addRes = await models_1.roomModel.addRoom(insertRoomData);
     console.log('room create---', addRes)
-    res.json((0, utils_1.httpBody)(0, addRes, `创建room成功`));
+    res.json((0, utils_1.httpBody)(0, addRes, '创建room成功'));
 });
 
 //更新room status
@@ -701,7 +704,7 @@ router.post('/roomupdatestatus', async (req, res) => {
         room_id: roomId
     });
 
-    res.json((0, utils_1.httpBody)(0, updateRes, `更新room status成功`));
+    res.json((0, utils_1.httpBody)(0, updateRes, '更新room status成功'));
 });
 
 //更新room title
@@ -719,7 +722,7 @@ router.post('/roomupdatetitle', async (req, res) => {
         room_id: roomId
     });
 
-    res.json((0, utils_1.httpBody)(0, updateRes, `更新room title成功`));
+    res.json((0, utils_1.httpBody)(0, updateRes, '更新room title成功'));
 });
 
 
@@ -738,7 +741,7 @@ router.post('/messageupdatestatus', async (req, res) => {
         room_id: roomId
     });
 
-    res.json((0, utils_1.httpBody)(0, updateRes, `更新room title成功`));
+    res.json((0, utils_1.httpBody)(0, updateRes, '更新room title成功'));
 });
 
 //得到所有rooms
@@ -754,7 +757,7 @@ router.get('/getrooms', async (req, res, next) => {
         status: 0
     });
 
-    res.json((0, utils_1.httpBody)(0, rooms, `获取rooms成功`));
+    res.json((0, utils_1.httpBody)(0, rooms, '获取rooms成功'));
 });
 
 //根据room_id获取所有messages
@@ -771,7 +774,7 @@ router.get('/chathistory', async (req, res, next) => {
         room_id: roomId
     });
 
-    res.json((0, utils_1.httpBody)(0, roomMesages, `获取roomMessages成功`));
+    res.json((0, utils_1.httpBody)(0, roomMesages, '获取roomMessages成功'));
 });
 
 
