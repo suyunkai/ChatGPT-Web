@@ -69,7 +69,7 @@ async function getUsers({ page, page_size }, where) {
     const find = await mysql_1.default.findAndCountAll({
         where,
         order: [['create_time', 'DESC']],
-        offset: (page - 1) * page_size,
+        offset: page < 1 ? page * page_size : (page - 1) * page_size,
         limit: page_size
     });
     return find;

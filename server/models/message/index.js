@@ -18,7 +18,7 @@ async function getMessages({ page, page_size }, where) {
             }
         ],
         order: [['create_time', 'DESC']],
-        offset: (page - 1) * page_size,
+        offset: page < 1 ? page * page_size : (page - 1) * page_size,
         limit: page_size
     });
     return find;
