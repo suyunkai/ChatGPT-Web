@@ -153,7 +153,7 @@ router.post('/login', async (req, res) => {
         });
     }
     const token = await (0, utils_1.generateToken)(userInfo);
-    await redis_1.default.select(1).setex(`token:${token}`, JSON.stringify(userInfo), 100000);
+    await redis_1.default.select(1).setex(`token:${token}`, JSON.stringify(userInfo), 86400 * 7);
     if (isSignin === 1) {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
