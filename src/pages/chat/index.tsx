@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { CommentOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Button, Modal, Popconfirm, Space, Tabs, Select, message } from 'antd'
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import styles from './index.module.less'
 import { chatStore, configStore, userStore } from '@/store'
@@ -282,6 +282,7 @@ ${JSON.stringify(response, null, 4)}
                   description="是否确定删除会话？"
                   onConfirm={() => {
                     delChat(item.id)
+                    handleMenuClick({ key: '/' + chats[0].id})
                   }}
                   onCancel={() => {
                     // ==== 无操作 ====

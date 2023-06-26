@@ -42,7 +42,7 @@ export interface ChatState {
 
 const chatStore = create<ChatState>()(
   persist(
-    (set,get) => ({
+    (set, get) => ({
       chats: [],
       selectChatId: '',
       addChat: () =>
@@ -66,19 +66,14 @@ const chatStore = create<ChatState>()(
           const nowChat = state.chats.filter((c) => c.id === id)
           // 更新room库status为1
           postRoomUpdateStatus({ roomId: id.toString() })
-            .then((res) => {
-              if (res.code) return
-            })
-          // if (state.chats.length <= 1) {
-          //   const info = generateChatInfo()
-          //   return {
-          //     chats: [{ ...info }],
-          //     selectChatId: info.id
-          //   }
-          // }
+          const newId = newChats[0].id
+          // 查找mysql中对话rooms
+          getMysqlChats(newId.toString()).then(mysqlChats => {
+            state.chats = mysqlChats;
+          })
           return {
             selectChatId: state.chats[0].id,
-            chats: [...newChats]
+            chats: newChats
           }
         }),
       clearChats: () =>
@@ -104,14 +99,10 @@ const chatStore = create<ChatState>()(
         }),
       changeSelectChatId: (id) =>
         set((state: ChatState) => {
-          let newChats: ChatsInfo[] = [];
           // 查找mysql中对话rooms
           getMysqlChats(id.toString()).then(mysqlChats => {
-            newChats = mysqlChats;
-          }).catch(error => {
-            console.error(error);
-          });
-          console.log('newChats', newChats)
+            state.chats = mysqlChats;
+          })
           return {
             // chats: newChats,
             selectChatId: id
