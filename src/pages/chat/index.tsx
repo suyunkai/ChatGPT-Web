@@ -312,6 +312,7 @@ ${JSON.stringify(response, null, 4)}
                     model: e.toString()
                   })
                 }}
+                popupMatchSelectWidth
               />
               <Button
                 block

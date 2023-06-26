@@ -1,6 +1,7 @@
 import {
   CarmiInfo,
   ConfigInfo,
+  GetMessageParam,
   GetUserParam,
   MessageInfo,
   NotificationInfo,
@@ -69,7 +70,7 @@ export function getAdminSignin(params: Paging) {
 }
 
 // 用户对话列表
-export function getAdminMessages(params: Paging) {
+export function getAdminMessages(params: GetMessageParam) {
   return request.get<TableData<Array<MessageInfo>>>('/api/admin/messages', params)
 }
 

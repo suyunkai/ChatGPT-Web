@@ -2,7 +2,7 @@ import { getAdminMessages } from '@/request/adminApi';
 import { MessageInfo } from '@/types/admin';
 import { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { Tag } from 'antd';
+import { Button, Col, DatePicker, Form, Input, InputNumber, Row, Space, Tag } from 'antd';
 import { useRef} from 'react';
 
 function MessagePage() {
@@ -64,8 +64,39 @@ function MessagePage() {
         },
     ];
 
+    const [searchForm] = Form.useForm()
+    const handleSearch = () => {
+        const searchValues = searchForm.getFieldsValue()
+        tableActionRef.current?.reloadAndRest?.()
+      }
+
     return (
         <div>
+            <Form form={searchForm} onFinish={handleSearch}>
+        <Row gutter={24}>
+          <Col>
+            <Form.Item name="account" label = "账户">
+              <Input placeholder="输入账号,支持关键词" />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item name="createTimeRange" label="消息产生时间">
+              <DatePicker.RangePicker
+                placeholder={['起始时间', '结束时间']}
+                allowClear
+              />
+            </Form.Item>
+          </Col>
+
+          <Col>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                确认
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
             <ProTable
                 actionRef={tableActionRef}
                 columns={columns}
@@ -73,10 +104,26 @@ function MessagePage() {
                     x: 1800
                 }}
                 request={async (params, sorter, filter) => {
+                    const searchValues = searchForm.getFieldsValue()
+
+                    // 将搜索值添加到请求参数中
+                    const queryParams = {
+                        ...searchValues,
+                        page: params.current || 1,
+                        page_size: params.pageSize || 10
+                    }
+
                     // 表单搜索项会从 params 传入，传递给后端接口。
                     const res = await getAdminMessages({
                         page: params.current || 1,
                         page_size: params.pageSize || 10,
+                        account: queryParams.account ?? '',
+                        createTimeStart: queryParams.createTimeRange !== undefined ? 
+                            `${queryParams.createTimeRange[0].$y}-${queryParams.createTimeRange[0].$M + 1}-${queryParams.createTimeRange[0].$D}`
+                            : '', 
+                        createTimeEnd: queryParams.createTimeRange !== undefined ? 
+                            `${queryParams.createTimeRange[1].$y}-${queryParams.createTimeRange[1].$M + 1}-${queryParams.createTimeRange[1].$D}`
+                            : '',
                     });
                     return Promise.resolve({
                         data: res.data.rows,

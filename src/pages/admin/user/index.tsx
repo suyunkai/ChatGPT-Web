@@ -151,7 +151,7 @@ function UserPage() {
             </Form.Item>
           </Col>
           <Form.Item label="积分范围" name="scoreRange">
-            <Input.Group compact>
+            <Space.Compact>
               <Form.Item name={['scoreRange', 'min']} noStyle>
                 <InputNumber
                   placeholder="min"
@@ -181,7 +181,7 @@ function UserPage() {
                   style={{ width: '50%' }}
                 />
               </Form.Item>
-            </Input.Group>
+            </Space.Compact>
           </Form.Item>
           <Col>
             <Form.Item name="createTimeRange" label="用户注册时间">
@@ -233,14 +233,13 @@ function UserPage() {
             page: params.current || 1,
             page_size: params.pageSize || 10
           }
-          console.log('queryParams', queryParams)
           // 表单搜索项会从 params 传入，传递给后端接口。
           const res = await getAdminUsers({
             page: queryParams.current || 1,
             page_size: queryParams.pageSize || 10,
             account: queryParams.account ?? '',
-            scoreMin: queryParams.scoreRange.min ?? 0,
-            scoreMax: queryParams.scoreRange.max ?? 0,
+            scoreMin: queryParams.scoreRange !== undefined ? queryParams.scoreRange.min : 0,
+            scoreMax: queryParams.scoreRange !== undefined ? queryParams.scoreRange.max : 0,
             createTimeStart: queryParams.createTimeRange !== undefined ? 
                 `${queryParams.createTimeRange[0].$y}-${queryParams.createTimeRange[0].$M + 1}-${queryParams.createTimeRange[0].$D}`
                 : '', 

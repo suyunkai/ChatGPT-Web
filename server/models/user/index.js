@@ -69,11 +69,19 @@ async function getUsers({ page, page_size }, where) {
     const find = await mysql_1.default.findAndCountAll({
         where,
         order: [['create_time', 'DESC']],
-        offset: page * page_size,
+        offset: (page - 1) * page_size,
         limit: page_size
     });
     return find;
 }
+
+async function getUsersNoLimit(where) {
+    const find = await mysql_1.default.findAndCountAll({
+        where,
+    });
+    return find;
+}
+
 async function delUser(id) {
     const del = await mysql_1.default.destroy({
         where: {
@@ -131,6 +139,7 @@ exports.default = {
     delUser,
     editUser,
     addUserProductQuota,
-    editUserInfo
+    editUserInfo,
+    getUsersNoLimit
 };
 //# sourceMappingURL=index.js.map

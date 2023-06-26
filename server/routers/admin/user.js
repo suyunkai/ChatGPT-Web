@@ -4,7 +4,9 @@ const tslib_1 = require("tslib");
 const express_1 = tslib_1.__importDefault(require("express"));
 const utils_1 = require("../../utils");
 const models_1 = require("../../models");
+const { Sequelize } = require("sequelize");
 const router = express_1.default.Router();
+const {Op} = Sequelize;
 router.get('/user', async function (req, res, next) {
 
     // const { page, page_size } = (0, utils_1.pagingData)({
@@ -21,47 +23,32 @@ router.get('/user', async function (req, res, next) {
     scoreMin = Number(scoreMin)
     scoreMax = Number(scoreMax)
     let where = {
-        'account' : account,
-        'integral>=': scoreMin,
-        'integral<=': scoreMax,
-        'create_time>=': createTimeStart,
-        'create_time<=': createTimeEnd,
-        'vip_expire_time>=': vipTimeStart,
-        'vip_expire_time<=': vipTimeEnd,
-        'svip_expire_time>=': svipTimeStart,
-        'svip_expire_time<=': svipTimeEnd
-      };
-      
-      if(account === ''){
-        delete where['account'];
-      }
-      if (scoreMax === 0) {
-        delete where['integral<='];
-      }
-      
-      if (createTimeStart === '') {
-        delete where['create_time>='];
-      }
-      
-      if (createTimeEnd === '') {
-        delete where['create_time<='];
-      }
-      
-      if (vipTimeStart === '') {
-        delete where['vip_expire_time>='];
-      }
-      
-      if (vipTimeEnd === '') {
-        delete where['vip_expire_time<='];
-      }
-      
-      if (svipTimeStart === '') {
-        delete where['svip_expire_time>='];
-      }
-      
-      if (svipTimeEnd === '') {
-        delete where['svip_expire_time<='];
-      }
+      ...(account && { account: { [Op.like]: `%${account}%` } }),
+      ...(scoreMin || scoreMax) && {
+        integral: {
+          ...(scoreMin && { [Op.gte]: scoreMin }),
+          ...(scoreMax && { [Op.lte]: scoreMax }),
+        },
+      },
+      ...(createTimeStart || createTimeEnd) && {
+        create_time: {
+          ...(createTimeStart && { [Op.gte]: createTimeStart }),
+          ...(createTimeEnd && { [Op.lte]: createTimeEnd }),
+        },
+      },
+      ...(vipTimeStart || vipTimeEnd) && {
+        vip_expire_time: {
+          ...(vipTimeStart && { [Op.gte]: vipTimeStart }),
+          ...(vipTimeEnd && { [Op.lte]: vipTimeEnd }),
+        },
+      },
+      ...(svipTimeStart || svipTimeEnd) && {
+        svip_expire_time: {
+          ...(svipTimeStart && { [Op.gte]: svipTimeStart }),
+          ...(svipTimeEnd && { [Op.lte]: svipTimeEnd }),
+        },
+      },
+    };
     const users = await models_1.userModel.getUsers({ page, page_size }, where);
     res.json((0, utils_1.httpBody)(0, users));
 });

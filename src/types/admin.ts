@@ -3,6 +3,14 @@ export interface Paging {
   page_size: number
 }
 
+export interface GetMessageParam {
+  page: number
+  page_size: number
+  account?: string,
+  createTimeStart?: string,
+  createTimeEnd?: string,
+}
+
 export interface GetUserParam {
   page: number
   page_size: number
