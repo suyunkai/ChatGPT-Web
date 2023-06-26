@@ -1,6 +1,7 @@
 import {
   CarmiInfo,
   ConfigInfo,
+  GetUserParam,
   MessageInfo,
   NotificationInfo,
   OrderInfo,
@@ -37,7 +38,7 @@ export function addAdminCarmis(params: RequestAddCarmi) {
 }
 
 // 用户列表
-export function getAdminUsers(params: Paging) {
+export function getAdminUsers(params: GetUserParam) {
   return request.get<TableData<Array<UserInfo>>>('/api/admin/user', params)
 }
 // 删除用户

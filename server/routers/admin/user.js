@@ -6,10 +6,17 @@ const utils_1 = require("../../utils");
 const models_1 = require("../../models");
 const router = express_1.default.Router();
 router.get('/user', async function (req, res, next) {
-    const { page, page_size } = (0, utils_1.pagingData)({
-        page: req.query.page,
-        page_size: req.query.page_size
-    });
+
+    // const { page, page_size } = (0, utils_1.pagingData)({
+    //     page: req.query.page,
+    //     page_size: req.query.page_size
+    // });
+    let {page,page_size,account,scoreMin,scoreMax,createTimeStart,
+        createTimeEnd,vipTimeStart,vipTimeEnd,svipTimeStart,svipTimeEnd} = req.query
+    page = Number(page)
+    page_size = Number(page_size)
+    scoreMin = Number(scoreMin)
+    scoreMax = Number(scoreMax)
     const carmis = await models_1.userModel.getUsers({ page, page_size });
     res.json((0, utils_1.httpBody)(0, carmis));
 });

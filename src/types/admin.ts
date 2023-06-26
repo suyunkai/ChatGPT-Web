@@ -3,6 +3,20 @@ export interface Paging {
   page_size: number
 }
 
+export interface GetUserParam {
+  page: number
+  page_size: number
+  account?: string,
+  scoreMin?: number,
+  scoreMax?: number,
+  createTimeStart?: string,
+  createTimeEnd?: string,
+  vipTimeStart?: string,
+  vipTimeEnd?: string,
+  svipTimeStart?: string,
+  svipTimeEnd?: string,
+}
+
 export interface TableData<T> {
   count: number
   rows: T

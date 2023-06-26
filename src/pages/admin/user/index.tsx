@@ -9,15 +9,17 @@ import {
   ProFormDigit,
   ProFormGroup,
   ProFormRadio,
+  ProFormSelect,
   ProFormText
 } from '@ant-design/pro-components'
 import { ProTable } from '@ant-design/pro-components'
-import { Tag, Button, Space, message, Form } from 'antd'
+import { Tag, Button, Space, message, Form, Row, Col, Input, DatePicker, InputNumber } from 'antd'
 import { useRef, useState } from 'react'
 
 function UserPage() {
   const tableActionRef = useRef<ActionType>()
   const [form] = Form.useForm<UserInfo>()
+  const [searchForm] = Form.useForm()
   const [edidInfoModal, setEdidInfoModal] = useState<{
     open: boolean
     info: UserInfo | undefined
@@ -25,6 +27,7 @@ function UserPage() {
     open: false,
     info: undefined
   })
+
   const columns: ProColumns<UserInfo>[] = [
     {
       title: 'ID',
@@ -94,10 +97,10 @@ function UserPage() {
       title: '操作',
       width: 150,
       valueType: 'option',
-      fixed: 'right',
+      fixed: window.innerWidth <= 768 ? undefined : 'right', // 根据屏幕宽度动态设置 fixed 属性
       render: (_, data) => [
         <Button
-          key="del"
+          key="edit"
           type="link"
           onClick={() => {
             setEdidInfoModal(() => {
@@ -133,8 +136,86 @@ function UserPage() {
     }
   ]
 
+  const handleSearch = () => {
+    const searchValues = searchForm.getFieldsValue()
+    tableActionRef.current?.reloadAndRest?.()
+  }
+
   return (
     <div>
+      <Form form={searchForm} onFinish={handleSearch}>
+        <Row gutter={24}>
+          <Col>
+            <Form.Item name="account" label = "账户">
+              <Input placeholder="输入账号,支持关键词" />
+            </Form.Item>
+          </Col>
+          <Form.Item label="积分范围" name="scoreRange">
+            <Input.Group compact>
+              <Form.Item name={['scoreRange', 'min']} noStyle>
+                <InputNumber
+                  placeholder="min"
+                  min={0}
+                  max={1000000}
+                  style={{ width: '50%' }}
+                />
+              </Form.Item>
+              <Form.Item
+                name={['scoreRange', 'max']}
+                noStyle
+                rules={[
+                  {
+                    validator: (_, value) => {
+                      if (value && value < 0) {
+                        return Promise.reject(new Error('最大积分不能小于0'));
+                      }
+                      return Promise.resolve();
+                    },
+                  },
+                ]}
+              >
+                <InputNumber
+                  placeholder="max"
+                  min={0}
+                  max={100000000}
+                  style={{ width: '50%' }}
+                />
+              </Form.Item>
+            </Input.Group>
+          </Form.Item>
+          <Col>
+            <Form.Item name="createTimeRange" label="用户注册时间">
+              <DatePicker.RangePicker
+                placeholder={['起始时间', '结束时间']}
+                allowClear
+              />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item name="vipTimeRange" label="VIP范围">
+              <DatePicker.RangePicker
+                placeholder={['起始时间', '结束时间']}
+                allowClear
+              />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item name="svipTimeRange" label="SVIP范围">
+              <DatePicker.RangePicker
+                placeholder={['起始时间', '结束时间']}
+                allowClear
+              />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                确认
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
       <ProTable
         actionRef={tableActionRef}
         columns={columns}
@@ -144,10 +225,40 @@ function UserPage() {
           x: 1800
         }}
         request={async (params, sorter, filter) => {
-          // 表单搜索项会从 params 传入，传递给后端接口。
-          const res = await getAdminUsers({
+          const searchValues = searchForm.getFieldsValue()
+
+          // 将搜索值添加到请求参数中
+          const queryParams = {
+            ...searchValues,
             page: params.current || 1,
             page_size: params.pageSize || 10
+          }
+          console.log('queryParams', queryParams)
+          // 表单搜索项会从 params 传入，传递给后端接口。
+          const res = await getAdminUsers({
+            page: queryParams.current || 1,
+            page_size: queryParams.pageSize || 10,
+            account: queryParams.account ?? '',
+            scoreMin: queryParams.scoreRange.min ?? 0,
+            scoreMax: queryParams.scoreRange.max ?? 0,
+            createTimeStart: queryParams.createTimeRange !== undefined ? 
+                `${queryParams.createTimeRange[0].$y}-${queryParams.createTimeRange[0].$M + 1}-${queryParams.createTimeRange[0].$D}`
+                : '', 
+            createTimeEnd: queryParams.createTimeRange !== undefined ? 
+                `${queryParams.createTimeRange[1].$y}-${queryParams.createTimeRange[1].$M + 1}-${queryParams.createTimeRange[1].$D}`
+                : '',
+            vipTimeStart: queryParams.vipTimeRange !== undefined ?
+            `${queryParams.vipTimeRange[0].$y}-${queryParams.vipTimeRange[0].$M + 1}-${queryParams.vipTimeRange[0].$D}`
+                : '',
+            vipTimeEnd: queryParams.vipTimeRange !== undefined ?
+                `${queryParams.vipTimeRange[1].$y}-${queryParams.vipTimeRange[1].$M + 1}-${queryParams.vipTimeRange[1].$D}`
+                : '',
+            svipTimeStart: queryParams.svipTimeRange !== undefined ?
+                `${queryParams.svipTimeRange[0].$y}-${queryParams.svipTimeRange[0].$M + 1}-${queryParams.svipTimeRange[0].$D}`
+                : '',
+            svipTimeEnd: queryParams.svipTimeRange !== undefined ?
+                `${queryParams.svipTimeRange[1].$y}-${queryParams.svipTimeRange[1].$M + 1}-${queryParams.svipTimeRange[1].$D}`
+                : '',
           })
           return Promise.resolve({
             data: res.data.rows,
