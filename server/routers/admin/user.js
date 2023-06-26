@@ -11,14 +11,59 @@ router.get('/user', async function (req, res, next) {
     //     page: req.query.page,
     //     page_size: req.query.page_size
     // });
-    let {page,page_size,account,scoreMin,scoreMax,createTimeStart,
+    const {account,createTimeStart,
         createTimeEnd,vipTimeStart,vipTimeEnd,svipTimeStart,svipTimeEnd} = req.query
+
+    let {page,page_size,scoreMin,scoreMax} = req.query
+    
     page = Number(page)
     page_size = Number(page_size)
     scoreMin = Number(scoreMin)
     scoreMax = Number(scoreMax)
-    const carmis = await models_1.userModel.getUsers({ page, page_size });
-    res.json((0, utils_1.httpBody)(0, carmis));
+    let where = {
+        'account' : account,
+        'integral>=': scoreMin,
+        'integral<=': scoreMax,
+        'create_time>=': createTimeStart,
+        'create_time<=': createTimeEnd,
+        'vip_expire_time>=': vipTimeStart,
+        'vip_expire_time<=': vipTimeEnd,
+        'svip_expire_time>=': svipTimeStart,
+        'svip_expire_time<=': svipTimeEnd
+      };
+      
+      if(account === ''){
+        delete where['account'];
+      }
+      if (scoreMax === 0) {
+        delete where['integral<='];
+      }
+      
+      if (createTimeStart === '') {
+        delete where['create_time>='];
+      }
+      
+      if (createTimeEnd === '') {
+        delete where['create_time<='];
+      }
+      
+      if (vipTimeStart === '') {
+        delete where['vip_expire_time>='];
+      }
+      
+      if (vipTimeEnd === '') {
+        delete where['vip_expire_time<='];
+      }
+      
+      if (svipTimeStart === '') {
+        delete where['svip_expire_time>='];
+      }
+      
+      if (svipTimeEnd === '') {
+        delete where['svip_expire_time<='];
+      }
+    const users = await models_1.userModel.getUsers({ page, page_size }, where);
+    res.json((0, utils_1.httpBody)(0, users));
 });
 router.delete('/user/:id', async function (req, res, next) {
     const { id } = req.params;
