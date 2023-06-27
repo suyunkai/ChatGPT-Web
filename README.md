@@ -15,7 +15,7 @@
 - 管理账号：admin@ai.com
 - 管理密码：admin123456
 
-如需帮助请提交 [Issues](https://github.com/vastxie/ChatGPT-Web/issues) 时留下联系方式。
+如需帮助请提交 [Issues](https://github.com/Winston1011/ChatGPT-Web/issues) 时留下联系方式。
 
 ### 页面截图
 
@@ -102,7 +102,7 @@ pm2 start index.js --name chatweb --watch
 关于 `node` `yarn` `pm2` 以及 Vercle 的一些设置可以自行搜索或向[GPT](https://chat.nonezero.top) 提问
 
 ## 贡献者
-感谢项目原作者 [79E](https://github.com/79E) 以及所有的 [项目贡献者](https://github.com/vastxie/ChatGPT-Web/graphs/contributors)
+感谢项目原作者 [79E](https://github.com/79E) 以及所有的 [项目贡献者](https://github.com/Winston1011/ChatGPT-Web/graphs/contributors)
 
 ## 开源协议
-[![License MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://github.com/vastxie/ChatGpt-Web/blob/master/license)
+[![License MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://github.com/Winston1011/ChatGPT-Web/blob/master/license)
