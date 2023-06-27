@@ -7,8 +7,8 @@
 
 ## 演示
 
-- 演示地址：[Web 演示](https://demoe.nonezero.top)
-- 后台地址：https://demoe.nonezero.top/admin
+- 演示地址：[Web 演示](https://demo.nonezero.top)
+- 后台地址：https://demo.nonezero.top/admin
 - 管理账号：admin@gmail.com
 - 管理密码：admin123456
 
