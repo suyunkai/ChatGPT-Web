@@ -2,17 +2,14 @@
 
 ![ChatGPT Web](./src/assets/openai.svg)
 
-# ChatGPT Web
-
-基于 [79E/ChatGpt-Web](https://github.com/79E/ChatGpt-Web) 项目二次开发的商业化 ChatGpt 网页应用。
 
 </div>
 
 ## 演示
 
-- 演示地址：[Web 演示](https://webdev.lightai.io/)
-- 后台地址：https://webdev.lightai.io/admin
-- 管理账号：admin@ai.com
+- 演示地址：[Web 演示](https://demoe.nonezero.top)
+- 后台地址：https://demoe.nonezero.top/admin
+- 管理账号：admin@gmail.com
 - 管理密码：admin123456
 
 如需帮助请提交 [Issues](https://github.com/Winston1011/ChatGPT-Web/issues) 时留下联系方式。
@@ -26,6 +23,7 @@
 
 ## 主要功能
 
+- 历史对话同步
 - 后台管理系统，可对用户，Token，商品，卡密等进行管理
 - 精心设计的 UI，响应式设计
 - 极快的首屏加载速度（~100kb）
