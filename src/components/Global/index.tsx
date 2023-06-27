@@ -11,7 +11,6 @@ import { notification } from 'antd'
 import React from 'react'
 import { getRooms, chatHistory } from '@/request/api'
 import { ChatGpt, ChatsInfo } from '@/types'
-import NotificationWrapper from './NotificationWrapper'
 
 type Props = {
   children: React.ReactElement
@@ -23,53 +22,46 @@ function Global(props: Props) {
   const { token, loginModal, setLoginModal } = userStore()
   const { chats, addChat, updateChats, changeSelectChatId } = chatStore()
 
-  const [activeNotifications, setActiveNotifications] = useState<Array<{ key: string | number; title: string; content: string }>>([]);
-  async function onOpenNotifications() {
-    for (const item of notifications) {
-      setActiveNotifications((prev: any) => [...prev, { key: item.id, title: item.title, content: item.content }]);
-      await delay(500);
-    }
-  }
   
-  // const openNotification = ({
-  //   key,
-  //   title,
-  //   content
-  // }: {
-  //   key: string | number
-  //   title: string
-  //   content: string
-  // }) => {
-  //   return notification.open({
-  //     key,
-  //     message: title,
-  //     description: (
-  //       <div
-  //         dangerouslySetInnerHTML={{
-  //           __html: content
-  //         }}
-  //       />
-  //     ),
-  //     onClick: () => {
-  //       console.log('Notification Clicked!')
-  //     }
-  //   })
-  // }
+  const openNotification = ({
+    key,
+    title,
+    content
+  }: {
+    key: string | number
+    title: string
+    content: string
+  }) => {
+    return notification.open({
+      key,
+      message: title,
+      description: (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: content
+          }}
+        />
+      ),
+      onClick: () => {
+        console.log('Notification Clicked!')
+      }
+    })
+  }
 
   function delay(ms: number) {
 	return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  // async function onOpenNotifications() {
-  //   for (const item of notifications) {
-  //     openNotification({
-  //       key: item.id,
-  //       title: item.title,
-  //       content: item.content
-  //     })
-	//   await delay(500)
-  //   }
-  // }
+  async function onOpenNotifications() {
+    for (const item of notifications) {
+      openNotification({
+        key: item.id,
+        title: item.title,
+        content: item.content
+      })
+	  await delay(500)
+    }
+  }
 
   async function getMysqlChats(nowId: string): Promise<Array<ChatsInfo>> {
     try {
@@ -140,16 +132,13 @@ function Global(props: Props) {
 	configAsync.fetchConfig()
   }, [])
 
-  // useLayoutEffect(()=>{
-	// onOpenNotifications();
-  // },[notification])
+  useLayoutEffect(()=>{
+	onOpenNotifications();
+  },[notification])
 
   return (
     <>
       {props.children}
-      {activeNotifications.map((notif: { key: any; title: any; content: any }) => (
-        <NotificationWrapper key={notif.key} title={notif.title} content={notif.content} />
-      ))}
       <LoginModal
         open={loginModal}
         onCancel={() => {
