@@ -144,11 +144,11 @@ const admin = {
         path: '/admin/notification',
 		icon: <NotificationFilled />
     },
-    // {
-    //   path: 'https://github.com/Winston1011/ChatGPT-Web',
-    //   name: 'Github',
-    //   icon: <GithubFilled />
-    // }
+    {
+      path: 'https://github.com/Winston1011/ChatGPT-Web',
+      name: 'Github',
+      icon: <GithubFilled />
+    }
   ]
 }
 
