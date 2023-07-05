@@ -970,7 +970,7 @@ router.post('/pay/precreate', async (req, res, next) => {
     //   }
     //   return `${req.protocol}://${host.split(':')[0]}`
     // }
-    const hostname = process.env.HOSTNAME || req.get('host').split(':')[0];
+    const hostname = process.env.HOSTNAME !== undefined && process.env.HOSTNAME !== '' ? process.env.HOSTNAME : req.get('host').split(':')[0];
     // const notifyUrl = `https://${req.get('host')?.split(':')[0]}/api/pay/notify?channel=${paymentInfo.channel}`;
     const notifyUrl = `https://${hostname}/api/pay/notify?channel=${paymentInfo.channel}`;
     const amount = productInfo.price / 100;
