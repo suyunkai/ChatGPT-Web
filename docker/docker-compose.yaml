@@ -9,7 +9,7 @@ services:
       - 8090:8080
 
   db:
-    container_name: mysql
+    container_name: db
     image: mysql:8
     restart: always
     environment:
