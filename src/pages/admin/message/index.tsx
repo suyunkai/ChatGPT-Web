@@ -116,7 +116,7 @@ function MessagePage() {
                     // 表单搜索项会从 params 传入，传递给后端接口。
                     const res = await getAdminMessages({
                         page: queryParams.page || 1,
-                        page_size: queryParams.pageSize || 10,
+                        page_size: queryParams.page_size || 10,
                         account: queryParams.account ?? '',
                         createTimeStart: (queryParams.createTimeRange !== undefined && queryParams.createTimeRange !== null ) ? 
                             `${queryParams.createTimeRange[0].$y}-${queryParams.createTimeRange[0].$M + 1}-${queryParams.createTimeRange[0].$D}`

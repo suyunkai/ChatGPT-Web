@@ -237,7 +237,7 @@ function UserPage() {
           // 表单搜索项会从 params 传入，传递给后端接口。
           const res = await getAdminUsers({
             page: queryParams.page || 1,
-            page_size: queryParams.pageSize || 10,
+            page_size: queryParams.page_size || 10,
             account: queryParams.account ?? '',
             scoreMin: queryParams.scoreRange !== undefined ? queryParams.scoreRange.min : 0,
             scoreMax: queryParams.scoreRange !== undefined ? queryParams.scoreRange.max : 0,
