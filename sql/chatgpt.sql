@@ -1,11 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 5.2.0
--- https://www.phpmyadmin.net/
---
--- 主机： localhost
--- 生成日期： 2023-06-20 17:52:32
--- 服务器版本： 5.7.42-log
--- PHP 版本： 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,18 +28,6 @@ CREATE TABLE `action` (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- 转存表中的数据 `action`
---
-
-INSERT INTO `action` (`id`, `user_id`, `type`, `describe`, `ip`, `create_time`, `update_time`) VALUES
-(61836466648608768, 61833690208014336, 'reset_password', '重置密码密码', '113.87.180.24', '2023-06-20 15:16:02', '2023-06-20 15:16:02'),
-(61836584022011904, 61833690208014336, 'login', '登录页面', '113.87.180.24', '2023-06-20 15:16:30', '2023-06-20 15:16:30'),
-(61872179196817408, 61833690208014336, 'login', '登录页面', '185.212.58.224', '2023-06-20 17:37:57', '2023-06-20 17:37:57'),
-(61873819140321280, 61833690208014336, 'login', '登录页面', '185.212.58.224', '2023-06-20 17:44:28', '2023-06-20 17:44:28'),
-(61874828944175104, 61833690208014336, 'login', '登录页面', '185.212.58.224', '2023-06-20 17:48:28', '2023-06-20 17:48:28'),
-(61875196939825152, 61833690208014336, 'chat', '对话(gpt-4)', '185.212.58.224', '2023-06-20 17:49:56', '2023-06-20 17:49:56');
 
 -- --------------------------------------------------------
 
@@ -105,30 +85,42 @@ INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_t
 --
 
 CREATE TABLE `message` (
-  `id` bigint(255) UNSIGNED NOT NULL,
-  `user_id` bigint(255) DEFAULT NULL,
-  `content` text,
+  `id` bigint unsigned NOT NULL,
+  `user_id` bigint DEFAULT NULL,
+  `room_id` varchar(255) DEFAULT NULL,
+  `message_id` varchar(255) DEFAULT NULL,
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `role` varchar(255) DEFAULT NULL,
-  `frequency_penalty` int(255) DEFAULT NULL,
-  `max_tokens` int(255) DEFAULT NULL,
+  `frequency_penalty` float DEFAULT NULL,
+  `max_tokens` int DEFAULT NULL,
   `model` varchar(255) DEFAULT NULL,
-  `presence_penalty` int(255) DEFAULT NULL,
-  `temperature` int(255) DEFAULT NULL,
+  `presence_penalty` float DEFAULT NULL,
+  `temperature` float DEFAULT NULL,
   `parent_message_id` varchar(255) DEFAULT NULL,
-  `status` int(11) NOT NULL DEFAULT '1',
+  `status` int NOT NULL DEFAULT '0',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `key_room_id` (`room_id`) USING BTREE,
+  KEY `key_roomo_user` (`user_id`,`room_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 --
--- 转存表中的数据 `message`
+-- 表的结构 `room`
 --
+CREATE TABLE `room` (
+  `id` bigint NOT NULL,
+  `room_id` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `status` tinyint NOT NULL DEFAULT '0',
+  `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` bigint NOT NULL,
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `key_room_id` (`room_id`) USING BTREE,
+  KEY `key_user_id_room_id` (`room_id`,`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `message` (`id`, `user_id`, `content`, `role`, `frequency_penalty`, `max_tokens`, `model`, `presence_penalty`, `temperature`, `parent_message_id`, `status`, `create_time`, `update_time`) VALUES
-(61875180560977920, 61833690208014336, '你好啊', 'user', 0, 1888, 'gpt-4', 0, 0, '8109d1c1-6e20-45a2-ab8b-05c147c6a8f2', 1, '2023-06-20 17:49:56', '2023-06-20 17:49:56'),
-(61875180560982016, 61833690208014336, '你好！很高兴和你交流。有什么问题我可以帮助你解答吗？', 'assistant', 0, 1888, 'gpt-4', 0, 0, '8109d1c1-6e20-45a2-ab8b-05c147c6a8f2', 1, '2023-06-20 17:49:56', '2023-06-20 17:49:56');
-
--- --------------------------------------------------------
 
 --
 -- 表的结构 `notification`
@@ -309,7 +301,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `nickname`, `account`, `password`, `avatar`, `role`, `integral`, `vip_expire_time`, `svip_expire_time`, `status`, `ip`, `create_time`, `update_time`) VALUES
-(61874584357441536, '管理员', '123@q.com', 'e07cf7b22ed1c238d5f0dd73eee65bcd', 'https://image.lightai.io/icon/header.png', 'administrator', 100, '2024-01-01', '2024-01-01', 1, '185.212.58.224', '2023-06-20 17:47:30', '2023-06-20 17:47:30');
+(61874584357441536, '管理员', 'admin@gmail.com', '3988ca8b82f82d11763c6f5b5633efd4', 'https://image.lightai.io/icon/header.png', 'administrator', 100, '2024-01-01', '2024-01-01', 1, '127.0.0.1', '2023-06-20 17:47:30', '2023-06-20 17:47:30');
 --
 -- 转储表的索引
 --
@@ -408,6 +400,8 @@ ALTER TABLE `config`
 ALTER TABLE `notification`
   MODIFY `id` bigint(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53897947229720577;
 COMMIT;
+
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
