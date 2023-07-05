@@ -32,7 +32,7 @@ services:
     container_name: chatgpt-web
     image: winstondz/chatgpt-web:arm-latest
     ports:
-      - 3100:3100
+      - 3100:80
     depends_on:
         - chatgpt-web-backend
 
