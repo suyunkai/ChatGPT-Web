@@ -15,7 +15,8 @@ function isResponseData<T>(obj: any): obj is ResponseData<T> {
 
 // 判断是否需要基础域名前缀
 const getBaseUrl = (url: string) => {
-  const baseURL = import.meta.env.VITE_APP_REQUEST_HOST
+  const hostname = process.env.HOSTNAME !== undefined && process.env.HOSTNAME !== '' ? process.env.HOSTNAME : '';
+  const baseURL = hostname != '' ? 'https://' + hostname : import.meta.env.VITE_APP_REQUEST_HOST;
   if (/^http(s?):\/\//i.test(url)) return url
   return baseURL + url
 }

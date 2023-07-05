@@ -47,7 +47,7 @@ services:
         - db
         - redis
     environment:
-    - HOSTNAME=mydomain.com
+      - HOSTNAME=mydomain.com
 
 volumes:
   mysql_data: {}
