@@ -47,9 +47,12 @@ services:
         - db
         - redis
     environment:
-      - HOSTNAME=mydomain.com
+    - HOSTNAME=demoapi.nonezero.top
 
 volumes:
-  mysql_data: {}
-  redis_data: {}
-  chatgpt-web-backend_config: {}
+  mysql_data:
+    name: mysql_data
+  redis_data:
+    name: redis_data
+  chatgpt-web-backend_config:
+    name: chatgpt_web_backend_config
