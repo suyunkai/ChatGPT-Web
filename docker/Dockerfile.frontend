@@ -6,8 +6,8 @@ FROM nginx:alpine-slim
 COPY ./dist /usr/share/nginx/html
 COPY docker/default.conf /etc/nginx/conf.d/
 
-# 暴露端口：3100
-EXPOSE 3100
+# 暴露端口：80
+EXPOSE 80
 
 # 运行nginx
 CMD ["nginx", "-g", "daemon off;"]
