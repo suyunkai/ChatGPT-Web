@@ -2,12 +2,14 @@ version: '3.1'
 
 services:
   adminer:
+    container_name: adminer
     image: adminer
     restart: always
     ports:
       - 8090:8080
 
   db:
+    container_name: mysql
     image: mysql:8
     restart: always
     environment:
@@ -18,6 +20,7 @@ services:
       - 3306:3306
 
   redis:
+    container_name: redis
     image: redis:alpine
     ports:
       - 6379:6379
@@ -26,6 +29,7 @@ services:
     command: redis-server --requirepass my-secret-pw
 
   chatgpt-web:
+    container_name: chatgpt-web
     image: winstondz/chatgpt-web:arm-latest
     ports:
       - 3100:3100
@@ -33,6 +37,7 @@ services:
         - chatgpt-web-backend
 
   chatgpt-web-backend:
+    container_name: chatgpt-web-backend
     image: winstondz/chatgpt-web-backend:arm-latest
     ports:
       - 3200:3200
