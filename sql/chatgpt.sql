@@ -329,12 +329,6 @@ ALTER TABLE `config`
   ADD PRIMARY KEY (`id`,`name`) USING BTREE;
 
 --
--- 表的索引 `message`
---
-ALTER TABLE `message`
-  ADD PRIMARY KEY (`id`);
-
---
 -- 表的索引 `notification`
 --
 ALTER TABLE `notification`
