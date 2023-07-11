@@ -18,6 +18,7 @@ export interface UserInfo {
   svip_expire_time: string
   ip: string
   status: number
+  invite_code?: string
   create_time: string
   update_time: string
   is_signin: number

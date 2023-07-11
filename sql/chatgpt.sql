@@ -400,8 +400,27 @@ ALTER TABLE `notification`
   MODIFY `id` bigint(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53897947229720577;
 COMMIT;
 
-
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+# 转储表 invite_record
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `invite_record`;
+
+CREATE TABLE `invite_record` (
+  `id` bigint(255) NOT NULL,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `invite_code` varchar(255) DEFAULT NULL COMMENT '邀请码',
+  `superior_id` bigint(255) DEFAULT NULL COMMENT '上级ID（一旦确定将不可修改）',
+  `reward` varchar(255) DEFAULT NULL COMMENT '奖励',
+  `reward_type` varchar(255) DEFAULT NULL COMMENT '奖励类型',
+  `status` int(11) NOT NULL DEFAULT '1' COMMENT '1正常',
+  `remarks` varchar(255) DEFAULT NULL COMMENT '评论',
+  `ip` varchar(255) DEFAULT NULL,
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `user_agent` varchar(255) DEFAULT NULL COMMENT 'ua',
+  PRIMARY KEY (`id`,`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
