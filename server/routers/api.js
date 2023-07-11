@@ -530,6 +530,11 @@ router.post('/chat/completions', async (req, res) => {
             ai3_16k_ratio,
             ai4_ratio
         };
+        // 重试的时候 删除此前消息
+        if(oldUserMessageId === ''){
+            await models_1.messageModel.delMessages(oldAssistantMessageId);
+        }
+
         // 添加一个标志位来记录是否已经计算过费用
         let isFeeCalculated = false;
         // 添加一个标志位来记录是否已经结束对话
@@ -551,7 +556,12 @@ router.post('/chat/completions', async (req, res) => {
                             // 将用户的消息存入数据库
                             // 将返回的数据存入数据库
                             // 扣除相关
-                            models_1.messageModel.addMessages([userMessageInfo, assistantInfo]);
+
+                            if(oldUserMessageId === ''){
+                                models_1.messageModel.addMessages([assistantInfo]);
+                            }else{
+                                models_1.messageModel.addMessages([userMessageInfo, assistantInfo]);
+                            }
                             if (!isFeeCalculated) {
                                 if (options.model.includes('gpt-4') && svipExpireTime < todayTime) {
                                     // GPT-4 非 SVIP 用户扣费逻辑，这里不再计算 tokens，直接扣除固定的 ratio
