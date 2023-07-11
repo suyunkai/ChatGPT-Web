@@ -81,8 +81,9 @@ INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_t
 (6, 'draw_use_price', '[{\"size\":\"256x256\",\"integral\":100},{\"size\":\"512x512\",\"integral\":120},{\"size\":\"1024x1024\",\"integral\":150}]', '绘画价格 ', '2023-05-25 16:58:26', '2023-05-26 21:49:43'),
 (7, 'shop_introduce', '', '商城介绍', '2023-05-29 11:51:39', '2023-05-29 17:33:15'),
 (8, 'user_introduce', '', '用户中心介绍', '2023-05-29 11:52:07', '2023-05-29 17:33:16'),
-(9, 'ai3_16k_ratio', '25', '3.5 16k 版本比例 每次对话等于多少积分', '2023-05-25 16:40:18', '2023-06-20 17:43:15');
-
+(9, 'ai3_16k_ratio', '25', '3.5 16k 版本比例 每次对话等于多少积分', '2023-05-25 16:40:18', '2023-06-20 17:43:15'),
+(10, 'invite_introduce', '<p>测试邀请说明</p>', '邀请页面说明', '2023-06-10 17:37:02', '2023-07-11 19:39:05'),
+(11, 'invite_reward', '10', '邀请奖励', '2023-06-10 18:13:30', '2023-06-10 18:34:40');
 -- --------------------------------------------------------
 
 --
@@ -424,3 +425,5 @@ CREATE TABLE `invite_record` (
   `user_agent` varchar(255) DEFAULT NULL COMMENT 'ua',
   PRIMARY KEY (`id`,`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `user` ADD COLUMN `invite_code` varchar(255) NOT NULL AFTER `ip`;
