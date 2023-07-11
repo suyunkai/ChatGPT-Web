@@ -207,7 +207,7 @@ export const adminRouter: RouteOptions[] = [
         element: <AdminTokenPage />,
         index: false,
         configure: {
-          title: 'Toekn管理',
+          title: 'Token管理',
           verifToken: true,
           role: ['administrator']
         }
