@@ -45,7 +45,7 @@ const web = [
   },
   {
     path: '/user',
-    name: '邀请',
+    name: '用户',
     icon: <UsergroupAddOutlined />,
     message: '用户信息'
   },

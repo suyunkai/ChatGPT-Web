@@ -30,9 +30,9 @@ const dropdownItems = [
 
 function screenDropdownItems(status: string, position: 'left' | 'right') {
   const newList = dropdownItems.filter((item) => {
-    if (status !== 'error' && item.key === 'delete') {
-      return false
-    }
+    // if (status !== 'error' && item.key === 'delete') {
+    //   return false
+    // }
 
     if (position !== 'left' && item.key === 'refurbish') {
       return false

@@ -757,6 +757,20 @@ router.post('/messageupdatestatus', async (req, res) => {
     res.json((0, utils_1.httpBody)(0, updateRes, '更新room title成功'));
 });
 
+//删除message
+router.post('/delmessage', async (req, res) => {
+    const user_id = req?.user_id;
+    if (!user_id) {
+        res.status(500).json((0, utils_1.httpBody)(-1, '服务端错误'));
+        return;
+    }
+    const { messageId } = req.body;
+
+    const delRes = await models_1.messageModel.delMessages(messageId);
+
+    res.json((0, utils_1.httpBody)(0, delRes, '删除message成功'));
+});
+
 //得到所有rooms
 router.get('/getrooms', async (req, res, next) => {
     const user_id = req?.user_id;
