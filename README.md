@@ -12,7 +12,9 @@
 - 管理账号：admin@gmail.com
 - 管理密码：admin123456
 
-如需帮助请提交 [Issues](https://github.com/Winston1011/ChatGPT-Web/issues) 时留下联系方式。
+如需帮助请提交 [Issues](https://github.com/Winston1011/ChatGPT-Web/issues) .
+或者添加个人微信：Winston110150
+![Alt text](IMG_2772.jpeg)
 
 ### 页面截图
 
