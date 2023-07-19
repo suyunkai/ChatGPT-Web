@@ -14,7 +14,7 @@
 
 如需帮助请提交 [Issues](https://github.com/Winston1011/ChatGPT-Web/issues) .
 或者添加个人微信：Winston110150
-![Alt text](IMG_2772.jpeg)
+![Alt text](image.png)
 
 ### 页面截图
 
