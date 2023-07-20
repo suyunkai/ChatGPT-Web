@@ -77,13 +77,32 @@ router.get('/send_sms', async (req, res) => {
 // 登陆注册
 router.post('/login', async (req, res) => {
     const { account, code, password } = req.body;
+    let { invite_code } = req.body
+    if(invite_code === ''){
+        invite_code = 'winstondz'
+    }
     const ip = (0, utils_1.getClientIP)(req);
     if (!account || (!code && !password)) {
         res.status(406).json((0, utils_1.httpBody)(-1, '缺少必要参数'));
         return;
     }
     let userInfo = await models_1.userModel.getUserInfo({ account });
-    if (account && code) {
+    let md5Password = '';
+    // 密码+验证码注册&登录
+    if(account && code && password){
+        const redisCode = await redis_1.default.select(0).get(`code:${account}`);
+        md5Password = (0, utils_1.generateMd5)(password);
+        if (!redisCode) {
+            res.status(406).json((0, utils_1.httpBody)(-1, '请先发送验证码'));
+            return;
+        }
+        if (code !== redisCode) {
+            res.status(406).json((0, utils_1.httpBody)(-1, '验证码不正确'));
+            return;
+        }
+        await redis_1.default.select(0).del(`code:${account}`);
+    }
+    else if (account && code) {
         const redisCode = await redis_1.default.select(0).get(`code:${account}`);
         if (!redisCode) {
             res.status(406).json((0, utils_1.httpBody)(-1, '请先发送验证码'));
@@ -96,7 +115,7 @@ router.post('/login', async (req, res) => {
         await redis_1.default.select(0).del(`code:${account}`);
     }
     else if (account && password) {
-        const md5Password = (0, utils_1.generateMd5)(password);
+        md5Password = (0, utils_1.generateMd5)(password);
         if (!userInfo) {
             res.status(406).json((0, utils_1.httpBody)(-1, '用户不存在'));
             return;
@@ -120,11 +139,12 @@ router.post('/login', async (req, res) => {
                     id,
                     account,
                     ip,
+                    invite_code,
                     nickname: '',
                     avatar: 'https://image.lightai.io/icon/header.png',
                     status: 1,
                     role: 'user',
-                    password: (0, utils_1.generateMd5)((0, utils_1.generateMd5)((0, utils_1.generateUUID)() + Date.now().toString())),
+                    password: md5Password ?? (0, utils_1.generateMd5)((0, utils_1.generateMd5)((0, utils_1.generateUUID)() + Date.now().toString())),
                     integral: Number(register_reward),
                     vip_expire_time: (0, utils_2.formatTime)('yyyy-MM-dd', yesterday),
                     svip_expire_time: (0, utils_2.formatTime)('yyyy-MM-dd', yesterday)

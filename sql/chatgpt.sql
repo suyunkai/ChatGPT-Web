@@ -427,3 +427,5 @@ CREATE TABLE `invite_record` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 ALTER TABLE `user` ADD COLUMN `invite_code` varchar(255) NOT NULL AFTER `ip`;
+
+ALTER TABLE `user` MODIFY COLUMN `invite_code` varchar(255) DEFAULT 'invite_code' NOT NULL AFTER `ip`;
