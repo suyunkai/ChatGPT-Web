@@ -547,10 +547,12 @@ router.post('/chat/completions', async (req, res) => {
         const ai3_ratio = (await models_1.configModel.getKeyConfig('ai3_ratio')).value || 0;
         const ai3_16k_ratio = (await models_1.configModel.getKeyConfig('ai3_16k_ratio')).value || 0;
         const ai4_ratio = (await models_1.configModel.getKeyConfig('ai4_ratio')).value || 0;
+        const ai4_32k_ratio = (await models_1.configModel.getKeyConfig('ai4_32k_ratio')).value || 0;
         const aiRatioInfo = {
             ai3_ratio,
             ai3_16k_ratio,
-            ai4_ratio
+            ai4_ratio,
+            ai4_32k_ratio
         };
         // 重试的时候 删除此前消息
         if(oldUserMessageId === ''){
@@ -587,7 +589,10 @@ router.post('/chat/completions', async (req, res) => {
                             if (!isFeeCalculated) {
                                 if (options.model.includes('gpt-4') && svipExpireTime < todayTime) {
                                     // GPT-4 非 SVIP 用户扣费逻辑，这里不再计算 tokens，直接扣除固定的 ratio
-                                    const ratio = Number(aiRatioInfo.ai4_ratio);
+                                    let ratio = Number(aiRatioInfo.ai4_ratio);
+                                    if(options.model.includes('32k')){
+                                        ratio = Number(aiRatioInfo.ai4_32k_ratio);
+                                    }
                                     models_1.userModel.updataUserVIP({
                                         id: user_id,
                                         type: 'integral',
@@ -604,7 +609,7 @@ router.post('/chat/completions', async (req, res) => {
                                 } else if (options.model.includes('gpt-3') && vipExpireTime < todayTime && svipExpireTime < todayTime) {
                                     // GPT-3 非 VIP 或 SVIP 用户扣费逻辑，这里不再计算 tokens，直接扣除固定的 ratio
                                     let ratio = Number(aiRatioInfo.ai3_ratio);
-                                    if(options.model === 'gpt-3.5-turbo-16k'){
+                                    if(options.model.includes('16k')){
                                         ratio = Number(aiRatioInfo.ai3_16k_ratio);
                                     }
                                     models_1.userModel.updataUserVIP({
@@ -643,7 +648,10 @@ router.post('/chat/completions', async (req, res) => {
                                 // 扣除相关
                                 if (options.model.includes('gpt-4') && svipExpireTime < todayTime) {
                                     // GPT-4 非 SVIP 用户扣费逻辑，这里不再计算 tokens，直接扣除固定的 ratio
-                                    const ratio = Number(aiRatioInfo.ai4_ratio);
+                                    let ratio = Number(aiRatioInfo.ai4_ratio);
+                                    if(options.model.includes('32k')){
+                                        ratio = Number(aiRatioInfo.ai4_32k_ratio);
+                                    }
                                     models_1.userModel.updataUserVIP({
                                         id: user_id,
                                         type: 'integral',
@@ -660,7 +668,7 @@ router.post('/chat/completions', async (req, res) => {
                                 } else if (options.model.includes('gpt-3') && vipExpireTime < todayTime && svipExpireTime < todayTime) {
                                     // GPT-3 非 VIP 或 SVIP 用户扣费逻辑，这里不再计算 tokens，直接扣除固定的 ratio
                                     let ratio = Number(aiRatioInfo.ai3_ratio);
-                                    if(options.model === 'gpt-3.5-turbo-16k'){
+                                    if(options.model.includes('16k')){
                                         ratio = Number(aiRatioInfo.ai3_16k_ratio);
                                     }
                                     models_1.userModel.updataUserVIP({
