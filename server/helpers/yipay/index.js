@@ -69,6 +69,17 @@ async function precreate(base, config, options) {
 			code: json.code === 1 ? 0 : json.code,
 			pay_url: json.h5_qrurl
 		};
+	}else{ //默认彩虹易支付
+		api = base.api + '/mapi.php';
+		response = await (0, node_fetch_1.default)(api, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+			},
+			body: formBody
+		});
+		json = await response.json();
+		console.log('默认彩虹易支付返回结构', json);
 	}
 	return {
 		code: json.code === 1 ? 0 : json.code,
