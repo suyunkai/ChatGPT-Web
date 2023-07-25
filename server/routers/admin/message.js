@@ -22,8 +22,11 @@ router.get('/messages', async function (req, res, next) {
     
     // Initialize an empty array to store user IDs
     const userIdArr = [];
-    const modelArr = modelName.split(',');
-    
+    let modelArr = [];
+    if(modelName.length > 0){
+      modelArr = modelName.split(',');
+    }
+
     // Iterate through the userInfos array and extract the IDs
     if(userInfos.count > 0){
         userInfos.rows.forEach(userInfo => {
@@ -44,7 +47,7 @@ router.get('/messages', async function (req, res, next) {
             ...(createTimeEnd && { [Op.lte]: createTimeEnd }),
           },
         },
-        ...(modelArr.length > 1 && {
+        ...(modelArr.length > 0 && {
           model: {
             [Op.in]: modelArr,
           },
