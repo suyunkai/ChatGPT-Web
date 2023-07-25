@@ -17,16 +17,16 @@ async function addTask(data, options) {
 CheckTokenQueue.process(async (job) => {
 	const { id, key, host } = job.data;
 	const check = await (0, utils_1.getKeyUsage)(host, key);
-	let status = 1;
+	const status = 1;
 	const limit = Number(check.hard_limit_usd);
 	const usage = Number(check.total_usage);
 	console.log('getUsage',limit, usage);
-	if (check.status) {
-		status = 0;
-	}
-	if (limit <= usage) {
-		status = 0;
-	}
+	// if (check.status) {
+	// 	status = 0;
+	// }
+	// if (limit <= usage) {
+	// 	status = 0;
+	// }
 	await models_1.tokenModel.editToken1((0, utils_1.filterObjectNull)({
         id, 
 		limit,
