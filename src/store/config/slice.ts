@@ -43,7 +43,7 @@ const configStore = create<ConfigState>()(
         },
         {
           label: '联网GPT',
-          value: 'net-gpt-3.5-turbo-16k'
+          value: 'gpt-3.5-turbo-16k-0613'
         },
         {
           label: 'GPT-4',
@@ -55,7 +55,7 @@ const configStore = create<ConfigState>()(
         },
         {
           label: 'Claude 2',
-          value: 'claude-2'
+          value: 'gpt-4-32k-0613'
         },
       ],
       config: {
