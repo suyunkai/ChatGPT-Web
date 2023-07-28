@@ -477,7 +477,7 @@ router.post('/chat/completions', async (req, res) => {
     const systemMessageExists = historyMessages.some(message => message.role === 'system');
 
     // 如果不存在 "system" 角色的消息，那么在数组开头添加一条
-    if (!systemMessageExists) {
+    if (!options.model.includes('0613') && !systemMessageExists) {
         const currentDate = new Date();
         const currentTimeString = currentDate.toLocaleString();  // 转化为本地时间字符串
 
