@@ -11,7 +11,7 @@ const modelsAll = [
         value: 'gpt-4'
     },
     {
-        label: 'gpt-4-0613',
+        label: 'claude-2',
         value: 'gpt-4-0613'
     },
     {
@@ -27,12 +27,8 @@ const modelsAll = [
         value: 'gpt-3.5-turbo-16k'
     },
     {
-        label: 'NET-GPT-3.5-turbo-16k',
-        value: 'net-gpt-3.5-turbo-16k'
-    },
-    {
-        label: 'claude-2',
-        value: 'claude-2'
+        label: 'net-gpt-3.5-turbo-16k',
+        value: 'gpt-3.5-turbo-16k-0613'
     },
     {
         label: 'DALL·E绘画',
