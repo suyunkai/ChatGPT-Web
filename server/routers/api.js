@@ -357,10 +357,18 @@ router.post('/chat/completions', async (req, res) => {
     const frequency_penalty = req.body.options?.frequency_penalty;   
     let max_tokens_value = req.body.options?.max_tokens; 
 
-    if (model.includes('gpt-4')) {
-        max_tokens_value = 4096;
-    } else if(model === 'gpt-3.5-trubo' && max_tokens_value >= 2048){
-        max_tokens_value = 2048;
+    if (model === 'gpt-4') {
+      max_tokens_value = 8000;
+    } else if (model === 'gpt-3.5-turbo') {
+      max_tokens_value = 4000;  
+    } else if (model === 'gpt-3.5-turbo-16k') {
+      max_tokens_value = 16000;
+    } else if (model === 'gpt-4-32k') {
+      max_tokens_value = 32000;  
+    } else if (model === 'gpt-4-0613') {
+      max_tokens_value = 90000;  
+    } else if (model === 'gpt-3.5-turbo-16k-0613') {
+      max_tokens_value = 16000;  
     }
 
     const options = {
@@ -369,7 +377,7 @@ router.post('/chat/completions', async (req, res) => {
         presence_penalty: presence_penalty ?? 0,
         temperature: temperature ?? 0.5,
         ...req.body.options,
-        max_tokens: max_tokens_value ?? 2048
+        max_tokens: max_tokens_value ?? 8000
     };
 
     console.log('chat options', options)
