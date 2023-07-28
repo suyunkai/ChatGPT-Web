@@ -1,5 +1,5 @@
 import { useLayoutEffect } from 'react'
-import { ModalForm, ProFormSelect, ProFormSlider, ProFormText } from '@ant-design/pro-components'
+import { ModalForm, ProFormSelect, ProFormSlider } from '@ant-design/pro-components'
 import { Form } from 'antd'
 import FormItemCard from '../FormItemCard'
 import { ChatGptConfig } from '@/types'
@@ -28,7 +28,7 @@ function ConfigModal(props: Props) {
         ...props.data
       })
     }
-  }, [props.open, chatGptConfigform])
+  }, [props.open, chatGptConfigform, props.data]) // 加入props.data
 
   return (
     <ModalForm<ChatGptConfig>
