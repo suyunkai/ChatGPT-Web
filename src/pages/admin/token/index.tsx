@@ -31,6 +31,10 @@ const modelsAll = [
         value: 'net-gpt-3.5-turbo-16k'
     },
     {
+        label: 'claude-2',
+        value: 'claude-2'
+    },
+    {
         label: 'DALL·E绘画',
         value: 'dall-e'
     }
