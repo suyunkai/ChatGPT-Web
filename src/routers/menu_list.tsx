@@ -31,7 +31,7 @@ const web = [
     icon: <CommentOutlined />,
     message: '与智能AI进行对话交流'
   },
-  {
+/*  {
     path: '/draw',
     name: '绘画',
     icon: <PictureOutlined />,
@@ -49,12 +49,13 @@ const web = [
     icon: <UsergroupAddOutlined />,
     message: '用户信息'
   },
-//  {
-//      path: 'https://github.com/Winston1011/ChatGPT-Web',
-//     name: '项目地址',
-//      icon: <GithubOutlined />,
-//      message: '免费开源可商业化AIWeb项目'
-//   }
+  {
+      path: 'https://github.com/Winston1011/ChatGPT-Web',
+     name: '项目地址',
+      icon: <GithubOutlined />,
+      message: '免费开源可商业化AIWeb项目'
+   }
+*/
 ]
 
 const admin = {
