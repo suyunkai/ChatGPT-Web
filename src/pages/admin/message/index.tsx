@@ -97,7 +97,7 @@ function MessagePage() {
                 >
                 <Select.Option value="gpt-3.5-turbo">gpt-3.5-turbo</Select.Option>
                 <Select.Option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</Select.Option>
-                <Select.Option value="gpt-3.5-turbo-16k-0613">gpt-3.5-turbo-16k-0613</Select.Option>
+                <Select.Option value="net-gpt-3.5-turbo-16k">net-gpt-3.5-turbo-16k</Select.Option>
                 <Select.Option value="gpt-4">gpt-4</Select.Option>
                 <Select.Option value="gpt-4-0613">gpt-4-0613</Select.Option>
                 <Select.Option value="gpt-4-32k">gpt-4-32k</Select.Option>
