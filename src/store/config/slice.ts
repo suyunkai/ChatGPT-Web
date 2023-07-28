@@ -55,7 +55,7 @@ const configStore = create<ConfigState>()(
         },
         {
           label: 'Claude 2',
-          value: 'gpt-4-32k-0613'
+          value: 'gpt-4-0613'
         },
       ],
       config: {
