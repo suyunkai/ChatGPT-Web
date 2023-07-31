@@ -28,7 +28,7 @@ function ConfigModal(props: Props) {
         ...props.data
       })
     }
-  }, [props.open, chatGptConfigform, props.data]) // 加入props.data
+  }, [props.open, chatGptConfigform])
 
   return (
     <ModalForm<ChatGptConfig>

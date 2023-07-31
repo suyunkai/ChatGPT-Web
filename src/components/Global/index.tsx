@@ -137,12 +137,11 @@ function Global(props: Props) {
       }
     }
 	configAsync.fetchConfig()
-  }, [token, addChat, changeSelectChatId, chats, updateChats]) // 添加相关的依赖
+  }, [])
 
-  // 为 useLayoutEffect 添加 'onOpenNotifications' 依赖
   useLayoutEffect(()=>{
-    onOpenNotifications();
-  }, [onOpenNotifications]) // 添加 'onOpenNotifications' 的依赖
+	onOpenNotifications();
+  },[notification])
 
   return (
     <>
