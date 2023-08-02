@@ -26,7 +26,7 @@ export interface ConfigState {
 
 const configStore = create<ConfigState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       configModal: false,
       notifications: [],
       shop_introduce: '',
