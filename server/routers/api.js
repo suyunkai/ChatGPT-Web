@@ -358,7 +358,7 @@ router.post('/chat/completions', async (req, res) => {
     let max_tokens_value = req.body.options?.max_tokens; 
 
     if (model === 'gpt-4') {
-      max_tokens_value = 2350;
+      max_tokens_value = 8000;
     } else if (model === 'gpt-3.5-turbo') {
       max_tokens_value = 4000;  
     } else if (model === 'gpt-3.5-turbo-16k') {
@@ -368,7 +368,7 @@ router.post('/chat/completions', async (req, res) => {
     } else if (model === 'gpt-4-0613') {
       max_tokens_value = 90000;  
     } else if (model === 'gpt-3.5-turbo-16k-0613') {
-      max_tokens_value = 4000;  
+      max_tokens_value = 8000;  
     }
 
     const options = {
