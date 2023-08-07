@@ -15,11 +15,11 @@ then
     # 如果用户确认，给 Docker 容器打上版本号标签
     # 编译前端界面
     echo "-------------------- Build chatgpt-web --------------------------"
-    sudo docker build -t suyunkai46/chatgpt-web:latest -t winstondz/chatgpt-web:${VERSION} -f Dockerfile.frontend ../.
+    sudo docker build -t suyunkai46/chatgpt-web:latest -t suyunkai46/chatgpt-web:${VERSION} -f Dockerfile.frontend ../.
 
     # 编译后端
     echo "-------------------- Build chatgpt-web-backend --------------------------"
-    sudo docker build -t suyunkai46/chatgpt-web-backend:latest -t winstondz/chatgpt-web-backend:${VERSION} -f Dockerfile.backend ../.
+    sudo docker build -t suyunkai46/chatgpt-web-backend:latest -t suyunkai46/chatgpt-web-backend:${VERSION} -f Dockerfile.backend ../.
 else
     echo "操作已取消."
 fi
