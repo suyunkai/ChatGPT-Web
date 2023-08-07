@@ -19,6 +19,10 @@ const modelsAll = [
         value: 'gpt-4-32k'
     },
     {
+        label: 'gpt-4-备用',
+        value: 'gpt-4-beiyong'
+    },
+    {
         label: 'gpt-3.5-turbo',
         value: 'gpt-3.5-turbo'
     },
@@ -27,7 +31,7 @@ const modelsAll = [
         value: 'gpt-3.5-turbo-16k'
     },
     {
-        label: 'net-gpt-3.5-turbo-16k',
+        label: '联网GPT',
         value: 'gpt-3.5-turbo-16k-0613'
     },
     {
