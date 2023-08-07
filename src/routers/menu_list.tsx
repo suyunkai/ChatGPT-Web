@@ -26,7 +26,7 @@ import {
 
 const web = [
   {
-    path: '/',
+    path: '/chat',
     name: '对话',
     icon: <CommentOutlined />,
     message: '与智能AI进行对话交流'
