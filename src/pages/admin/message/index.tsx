@@ -101,6 +101,7 @@ function MessagePage() {
                 <Select.Option value="gpt-4">gpt-4</Select.Option>
                 <Select.Option value="gpt-4-0613">gpt-4-0613</Select.Option>
                 <Select.Option value="gpt-4-32k">gpt-4-32k</Select.Option>
+                <Select.Option value="gpt-4-beiyong">gpt-4-beiyong</Select.Option>
                 </Select>
             </Form.Item>
           </Col>
