@@ -144,29 +144,29 @@ function AllInput(props: Props) {
           <SyncOutlined spin /> 停止回答 🤚
         </Button>
       ) : (
+    <>
         <Button
-          className={styles.allInput_button}
-          type="primary"
-          size="large"
-          disabled={!prompt || props.disabled}
-          onClick={() => {
-            props?.onSend?.(prompt)
-            setPrompt('')
-          }}
+            className={styles.allInput_button}
+            type="primary"
+            size="large"
+            disabled={!prompt || props.disabled}
+            onClick={() => {
+                props?.onSend?.(prompt)
+                setPrompt('')
+            }}
         >
-          发送
+            发送
         </Button>
-        // 在发送按钮右侧添加重试按钮
         <Button 
-          className={styles.allInput_button} 
-          style={{marginLeft: 8}}
-          onClick={() => {
-            props.onRefurbishChatMessage?.(); 
-          }}
+            className={styles.allInput_button} 
+            style={{marginLeft: 8}}
+            onClick={() => {
+                props.onRefurbishChatMessage?.(); 
+            }}
         >
-          <RedoOutlined /> 重试
+            <RedoOutlined /> 重试
         </Button>
-      </>
+    </>
       )}
 
       <Modal
