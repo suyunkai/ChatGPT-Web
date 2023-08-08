@@ -156,6 +156,17 @@ function AllInput(props: Props) {
         >
           发送
         </Button>
+        // 在发送按钮右侧添加重试按钮
+        <Button 
+          className={styles.allInput_button} 
+          style={{marginLeft: 8}}
+          onClick={() => {
+            props.onRefurbishChatMessage?.(); 
+          }}
+        >
+          <RedoOutlined /> 重试
+        </Button>
+      </>
       )}
 
       <Modal
