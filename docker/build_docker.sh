@@ -3,6 +3,7 @@
 # VERSION=$(grep -oP '(?<="version": ")[^"]*' ../package.json)
 
 VERSION=1.0.2
+npm install vite --save-dev
 cd ../ && npm run build
 cd docker/
 
