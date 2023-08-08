@@ -39,7 +39,7 @@ import AdminInvitePage from '@/pages/admin/invite'
 export const webRouter: RouteOptions[] = [
   {
     id: 'ChatPage',
-    path: '/chat',
+    path: '/',
     element: <ChatPage />,
     children: [],
     configure: {
