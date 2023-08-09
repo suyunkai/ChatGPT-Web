@@ -25,7 +25,7 @@ router.get('/config', async (req, res, next) => {
     });
     res.json((0, utils_1.httpBody)(0, {
         shop_introduce,
-        user_introduce,
+        user_introduce, 
         invite_introduce,
         notifications: notifications
     }));
@@ -42,7 +42,7 @@ router.get('/send_sms', async (req, res) => {
         return;
     }
 
-    // 使用 `generateCode` 函数异步生成一个代码，然后将结果存储在 `code` 变量中
+    // 使用 `generateCode` 函数异步生成一个代码，然后将结果存储在 `code` 变量中  
     const code = await (0, utils_1.generateCode)();
 
     // 连接到 Redis，并选择数据库 0
@@ -65,7 +65,7 @@ router.get('/send_sms', async (req, res) => {
         </div>
 `;
         if (emailRegex.test(source)) {
-            await mailer_1.default.send(source, mailContent, `验证码：${code}`, 'code');
+            await mailer_1.default.send(source, mailContent, `验证码：${code}`, 'code'); 
         }
 
     }
@@ -88,7 +88,7 @@ router.post('/login', async (req, res) => {
     }
     let userInfo = await models_1.userModel.getUserInfo({ account });
     let md5Password = '';
-    // 密码+验证码注册&登录
+    // 密码+验证码注册&登录 
     if(account && code && password){
         const redisCode = await redis_1.default.select(0).get(`code:${account}`);
         md5Password = (0, utils_1.generateMd5)(password);
@@ -97,7 +97,7 @@ router.post('/login', async (req, res) => {
             return;
         }
         if (code !== redisCode) {
-            res.status(406).json((0, utils_1.httpBody)(-1, '验证码不正确'));
+            res.status(406).json((0, utils_1.httpBody)(-1, '验证码不正确')); 
             return;
         }
         await redis_1.default.select(0).del(`code:${account}`);
@@ -144,10 +144,10 @@ router.post('/login', async (req, res) => {
                     avatar: 'https://image.lightai.io/icon/header.png',
                     status: 1,
                     role: 'user',
-                    password: md5Password ?? (0, utils_1.generateMd5)((0, utils_1.generateMd5)((0, utils_1.generateUUID)() + Date.now().toString())),
+                    password: md5Password ?? (0, utils_1.generateMd5)((0, utils_1.generateMd5)((0, utils_1.generateUUID)() + Date.now().toString())), 
                     integral: Number(register_reward),
                     vip_expire_time: (0, utils_2.formatTime)('yyyy-MM-dd', yesterday),
-                    svip_expire_time: (0, utils_2.formatTime)('yyyy-MM-dd', yesterday)
+                    svip_expire_time: (0, utils_2.formatTime)('yyyy-MM-dd', yesterday) 
                 }))
                 .then((addRes) => {
                     const turnoverId = (0, utils_1.generateNowflakeId)(1)();
@@ -211,7 +211,7 @@ router.get('/user/info', async (req, res) => {
 router.put('/user/password', async (req, res) => {
     const { account, code, password } = req.body;
     if (!account || !code || !password) {
-        res.status(406).json((0, utils_1.httpBody)(-1, '缺少必要参数'));
+        res.status(406).json((0, utils_1.httpBody)(-1, '缺少必要参数')); 
         return;
     }
     const user_id = req?.user_id;
@@ -237,7 +237,7 @@ router.put('/user/password', async (req, res) => {
         type: 'reset_password',
         describe: '重置密码密码'
     });
-    res.status(200).json((0, utils_1.httpBody)(0, '重置密码成功'));
+    res.status(200).json((0, utils_1.httpBody)(0, '重置密码成功')); 
 });
 // 获取用户签到日历
 router.get('/signin/list', async (req, res) => {
@@ -319,7 +319,7 @@ router.post('/images/generations', async (req, res) => {
             value: deductIntegral,
             operate: 'decrement'
         });
-        const turnoverId = (0, utils_1.generateNowflakeId)(1)();
+        const turnoverId = (0, utils_1.generateNowflakeId)(1)(); 
         models_1.turnoverModel.addTurnover({
             id: turnoverId,
             user_id,
@@ -368,6 +368,8 @@ router.post('/chat/completions', async (req, res) => {
     } else if (model === 'gpt-4-0613') {
       max_tokens_value = 90000;  
     } else if (model === 'gpt-3.5-turbo-16k-0613') {
+      max_tokens_value = 8000;  
+    } else if (model === 'gpt-4-beiyong') {
       max_tokens_value = 8000;  
     }
 
@@ -971,7 +973,7 @@ router.post('/signin', async (req, res, next) => {
     const turnoverId = (0, utils_1.generateNowflakeId)(1)();
     models_1.actionModel.addAction({
         user_id,
-        id: (0, utils_1.generateNowflakeId)(23)(),
+        id: (0, utils_1.generateNowflakeId)(23)(), 
         ip,
         type: 'signin',
         describe: '签到'
