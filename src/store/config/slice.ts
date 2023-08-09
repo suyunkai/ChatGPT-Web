@@ -3,7 +3,7 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { ChatGptConfig } from '@/types'
 import { NotificationInfo } from '@/types/admin'
 
-const VERSION = 'v3';
+const VERSION = 'v4';
 
 export interface ConfigState {
   // 配置信息
@@ -66,10 +66,10 @@ const configStore = create<ConfigState>()(
       ],
       config: {
         model: 'gpt-4',
-        temperature: 0,
+        temperature: 1,
         presence_penalty: 0,
         frequency_penalty: 0,
-        max_tokens: 90000
+        max_tokens: 30000
       },
       setConfigModal: (value) => set({ configModal: value }),
       changeConfig: (config) =>
