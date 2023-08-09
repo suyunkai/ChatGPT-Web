@@ -45,7 +45,7 @@ const configStore = create<ConfigState>()(
         },
         {
           label: 'GPT-4-备用',
-          value: 'gpt-4-beiyong'
+          value: 'gpt-4-32k-0613'
         },
         {
           label: 'GPT-3.5',
