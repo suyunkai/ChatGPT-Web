@@ -20,7 +20,7 @@ const modelsAll = [
     },
     {
         label: 'gpt-4-备用',
-        value: 'gpt-4-beiyong'
+        value: 'gpt-4-32k-0613'
     },
     {
         label: 'gpt-3.5-turbo',
