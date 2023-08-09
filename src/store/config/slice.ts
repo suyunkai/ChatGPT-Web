@@ -3,7 +3,7 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { ChatGptConfig } from '@/types'
 import { NotificationInfo } from '@/types/admin'
 
-const VERSION = 'v2';
+const VERSION = 'v3';
 
 export interface ConfigState {
   // 配置信息
