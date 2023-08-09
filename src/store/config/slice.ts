@@ -36,6 +36,18 @@ const configStore = create<ConfigState>()(
       invite_introduce: '',
       models: [
         {
+          label: 'GPT-4',
+          value: 'gpt-4'
+        },
+        {
+          label: 'GPT-4-32K',
+          value: 'gpt-4-32k'
+        },
+        {
+          label: 'GPT-4-备用',
+          value: 'gpt-4-beiyong'
+        },
+        {
           label: 'GPT-3.5',
           value: 'gpt-3.5-turbo'
         },
@@ -48,20 +60,12 @@ const configStore = create<ConfigState>()(
           value: 'gpt-3.5-turbo-16k-0613'
         },
         {
-          label: 'GPT-4',
-          value: 'gpt-4'
-        },
-        {
-          label: 'GPT-4-32K',
-          value: 'gpt-4-32k'
-        },
-        {
           label: 'Claude 2',
           value: 'gpt-4-0613'
         },
       ],
       config: {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4',
         temperature: 0,
         presence_penalty: 0,
         frequency_penalty: 0,
