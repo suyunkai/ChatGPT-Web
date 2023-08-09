@@ -90,9 +90,9 @@ function Global(props: Props) {
                   prompt: messageElement.content,
                   options: {
                     model: messageElement.model,
-                    temperature: messageElement.temperature,
-                    presence_penalty: parseFloat(messageElement.presence_penalty),
-                    frequency_penalty: messageElement.frequency_penalty,
+                    temperature: 1,
+                    presence_penalty: 0,
+                    frequency_penalty: 0,
                     max_tokens: messageElement.max_tokens,
                   },
                   parentMessageId: messageElement.parent_message_id,
