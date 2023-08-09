@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { createJSONStorage, persist } from 'zustand/middleware'
 import { ChatGptConfig } from '@/types'
 import { NotificationInfo } from '@/types/admin'
 
@@ -24,14 +23,13 @@ export interface ConfigState {
   replaceData: (config: { [key: string]: any }) => void
 }
 
-const configStore = create<ConfigState>()(
-  persist(
-    (set) => ({
-      configModal: false,
-      notifications: [],
-      shop_introduce: '',
-      user_introduce: '',
-      invite_introduce: '',
+const configStore = create<ConfigState>(
+  (set, get) => ({
+    configModal: false,
+    notifications: [],
+    shop_introduce: '',
+    user_introduce: '',
+    invite_introduce: '',
       models: [
         {
           label: 'GPT-3.5',
@@ -62,25 +60,20 @@ const configStore = create<ConfigState>()(
           value: 'gpt-4-0613'
         },
       ],
-      config: {
-        model: 'gpt-3.5-turbo',
-        temperature: 0,
-        presence_penalty: 0,
-        frequency_penalty: 0,
-        max_tokens: 90000
-      },
-      setConfigModal: (value) => set({ configModal: value }),
-      changeConfig: (config) =>
-        set((state: ConfigState) => ({
-          config: { ...state.config, ...config }
-        })),
-      replaceData: (data) => set((state: ConfigState) => ({ ...state, ...data }))
-    }),
-    {
-      name: 'config_storage', // name of item in the storage (must be unique)
-      storage: createJSONStorage(() => localStorage) // (optional) by default the 'localStorage' is used
-    }
-  )
+    config: {
+      model: 'gpt-3.5-turbo',
+      temperature: 0,
+      presence_penalty: 0,
+      frequency_penalty: 0,
+      max_tokens: 90000
+    },
+    setConfigModal: (value) => set({ configModal: value }),
+    changeConfig: (config) =>
+      set((state: ConfigState) => ({
+        config: { ...state.config, ...config }
+      })),
+    replaceData: (data) => set((state: ConfigState) => ({ ...state, ...data }))
+  })
 )
 
 export default configStore
