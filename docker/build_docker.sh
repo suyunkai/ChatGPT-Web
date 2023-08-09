@@ -2,7 +2,7 @@
 # 从上一级目录的 package.json 文件中提取版本号
 # VERSION=$(grep -oP '(?<="version": ")[^"]*' ../package.json)
 
-VERSION=1.0.4
+VERSION=1.0.5
 npm install vite --save-dev
 cd ../ && npm run build
 cd docker/
