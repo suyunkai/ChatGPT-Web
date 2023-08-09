@@ -113,7 +113,6 @@ function ChatMessage({
   const mdi = new MarkdownIt({
     html: true,
     linkify: true,
-    breaks: true, // 将这个选项设置为true
     highlight(code, language) {
       const validLang = !!(language && hljs.getLanguage(language))
       if (validLang) {
