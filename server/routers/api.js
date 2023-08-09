@@ -369,7 +369,7 @@ router.post('/chat/completions', async (req, res) => {
       max_tokens_value = 90000;  
     } else if (model === 'gpt-3.5-turbo-16k-0613') {
       max_tokens_value = 8000;  
-    } else if (model === 'gpt-4-beiyong') {
+    } else if (model === 'gpt-4-32k-0613') {
       max_tokens_value = 8000;  
     }
 
