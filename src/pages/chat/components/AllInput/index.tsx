@@ -118,7 +118,7 @@ function AllInput(props: Props) {
               // === 无操作 ===
             } else if (e.key === 'Enter' && e.keyCode === 13) {
               if (!props.disabled) {
-                props?.onSend?.(prompt.replace(/\n/g, '<br/>'))
+                props?.onSend?.(prompt)
                 setPrompt('')
               }
               e.preventDefault() //禁止回车的默认换行
