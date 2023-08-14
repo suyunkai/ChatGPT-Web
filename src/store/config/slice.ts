@@ -3,7 +3,7 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { ChatGptConfig } from '@/types'
 import { NotificationInfo } from '@/types/admin'
 
-const VERSION = 'v5';
+const VERSION = 'v6';
 
 export interface ConfigState {
   // 配置信息
@@ -44,7 +44,7 @@ const configStore = create<ConfigState>()(
           value: 'gpt-4-32k'
         },
         {
-          label: 'GPT-4-测试',
+          label: 'GPT-4-WEB',
           value: 'gpt-4-32k-0613'
         },
         {
