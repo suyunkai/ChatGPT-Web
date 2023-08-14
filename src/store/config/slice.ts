@@ -44,7 +44,7 @@ const configStore = create<ConfigState>()(
           value: 'gpt-4-32k'
         },
         {
-          label: 'GPT-4-备用',
+          label: 'GPT-4-测试',
           value: 'gpt-4-32k-0613'
         },
         {
