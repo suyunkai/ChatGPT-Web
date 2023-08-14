@@ -19,7 +19,7 @@ const modelsAll = [
         value: 'gpt-4-32k'
     },
     {
-        label: 'gpt-4-备用',
+        label: 'gpt-4-测试',
         value: 'gpt-4-32k-0613'
     },
     {
