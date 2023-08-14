@@ -1,8 +1,8 @@
-import useDocumentResize from '@/hooks/useDocumentResize';
+// import useDocumentResize from '@/hooks/useDocumentResize';
 import styles from './index.module.less';
 
 function Reminder(){
-//     const { width } = useDocumentResize()
+    // const { width } = useDocumentResize()
 //     const list = [
 //         {
 //             id: 'zhichangzhuli',
@@ -49,7 +49,7 @@ function Reminder(){
     
     
     
-        <div className={styles.reminder_question}>
+{/*         <div className={styles.reminder_question}>
             {
                width > 600 && list.map((item)=>{
                     return (
@@ -57,7 +57,7 @@ function Reminder(){
                         <img src={item.icon} alt="" />
                         <h3>{item.name}</h3>
                         <p>{item.desc}</p>
-</div>
+</div> */}
 )
                 })
             }
