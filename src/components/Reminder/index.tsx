@@ -1,7 +1,7 @@
 import useDocumentResize from '@/hooks/useDocumentResize';
 import styles from './index.module.less';
 
-// function Reminder(){
+function Reminder(){
 //     const { width } = useDocumentResize()
 //     const list = [
 //         {
