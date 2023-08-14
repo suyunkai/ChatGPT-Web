@@ -484,7 +484,7 @@ router.post('/chat/completions', async (req, res) => {
         }
     }
     // 检查是否存在 "system" 角色的消息
-    const systemMessageExists = historyMessages.some(message => message.role === 'system');
+/*    const systemMessageExists = historyMessages.some(message => message.role === 'system');
 
     // 如果不存在 "system" 角色的消息，那么在数组开头添加一条
     if (!options.model.includes('0613') && !systemMessageExists) {
@@ -498,7 +498,7 @@ router.post('/chat/completions', async (req, res) => {
             Current date: ${currentTimeString}`
         });
     }
-
+*/
     const messages = [
         ...historyMessages,
         {
