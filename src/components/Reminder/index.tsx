@@ -12,6 +12,7 @@ function Reminder(){
         <p className={styles.reminder_message}>GPT-4-32K：在普通GPT-4模型的基础上，有更长的上下文记录长度，最长能记录约2万字以上。</p>
         <p className={styles.reminder_message}>GPT-3.5：最普通的ChatGPT模型，回复速度快，能力一般。</p>
         <p className={styles.reminder_message}>GPT-3.5-16K：比普通GPT-3.5的上下文记录长度更长，能记录1万字以上内容，回复速度快，能力一般。</p>
+        <p className={styles.reminder_message}>Claude 2：另一个强大的大语言模型，跟ChatGPT的能力不相上下，优点是能记录数万字的超长上下文。</p>
 </div>
 );
 }
