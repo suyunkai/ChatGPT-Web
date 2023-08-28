@@ -10,12 +10,8 @@ function Reminder(){
         <p className={styles.reminder_message}>使用前请在右下角选择AI模型（默认为GPT-4），以下为各模型的能力及特点：</p>
         <p className={styles.reminder_message}>GPT-4：能力稍弱于官方GPT-4，稳定性相对较高，适合日常使用。</p>
         <p className={styles.reminder_message}>GPT-4-32K：在普通GPT-4模型的基础上，有更长的上下文记录长度，最长能记录约2万字以上。</p>
-        <p className={styles.reminder_message}>GPT-4-备用：该模型能力与官方版完全相同，但速率有限制。在GPT-4能力不足时可使用</p>
         <p className={styles.reminder_message}>GPT-3.5：最普通的ChatGPT模型，回复速度快，能力一般。</p>
         <p className={styles.reminder_message}>GPT-3.5-16K：比普通GPT-3.5的上下文记录长度更长，能记录1万字以上内容，回复速度快，能力一般。</p>
-        <p className={styles.reminder_message}>联网GPT：能够联网搜索资料的GPT-4，需要联网搜索时候可尝试使用。</p>
-        <p className={styles.reminder_message}>Claude 2：另一个强大的大语言模型，跟ChatGPT的能力不相上下，优点是能记录数万字的超长上下文。</p><br/>
-        <p className={styles.reminder_message}>使用过程中有任何疑问，请钉钉@苏云凯，将在第一时间为您解决问题。</p>
 </div>
 );
 }
