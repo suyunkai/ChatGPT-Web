@@ -16,6 +16,8 @@
 或者添加个人微信：Winston110150
 ![Alt text](image.png)
 
+欢迎大家打赏！（支付宝&微信&QQ&PayPal均可）
+![img_1.png](img_1.png)
 ### 页面截图
 
 ![页面截图1](https://files.catbox.moe/tp963e.png)
